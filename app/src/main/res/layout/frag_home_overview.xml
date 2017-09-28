@@ -19,7 +19,7 @@
 
         <TextView
             style="@style/TextStyle.White"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:drawablePadding="5dp"
             android:drawableStart="@drawable/ic_divider_rect"
             android:text="数据预览"
@@ -53,7 +53,8 @@
             android:drawablePadding="10dp"
             android:drawableStart="@drawable/shape_danger_blue"
             android:text="存在隐患"
-            android:textColor="@color/colorText" />
+            android:textColor="@color/colorText"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -67,10 +68,9 @@
     </LinearLayout>
 
     <!--折线图-->
-    <ImageView
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/linechart"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/aa_test_line" />
+        android:layout_height="160dp" />
 
 </LinearLayout>

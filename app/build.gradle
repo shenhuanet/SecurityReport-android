@@ -55,6 +55,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.retrofit2:converter-scalars:2.3.0'
     compile 'com.getui:sdk:2.11.1.0'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile project(':calendar')
 }

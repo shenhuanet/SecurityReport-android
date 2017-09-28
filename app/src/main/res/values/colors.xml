@@ -6,6 +6,7 @@
     <color name="colorBackground">#FFFFFF</color>
     <color name="colorWindowBackground">#EBEBEB</color>
 
+    <color name="colorWhiteLite">#AFAFAF</color>
     <color name="colorRed">#D81E06</color>
     <color name="colorRed1">#F47957</color>
     <color name="colorRed2">#FB501A</color>
@@ -20,4 +21,6 @@
     <color name="colorGray1">#929292</color>
     <color name="colorText">#3C3C3C</color>
     <color name="colorOrange">#F79856</color>
+    <color name="colorOrangeHalf">#7FF79856</color>
+    <color name="colorOrange1">#F2945A</color>
 </resources>

@@ -39,16 +39,15 @@
             <FrameLayout
                 android:id="@+id/frameOverview"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="wrap_content" />
 
             <!--报警监测-->
             <FrameLayout
                 android:id="@+id/frameMonitor"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
-
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>
