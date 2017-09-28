@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="28dp"
+    android:background="@color/colorPrimary"
+    android:orientation="horizontal">
+
+    <TextView
+        style="@style/WeekIndicatorStyle"
+        android:text="一" />
+
+    <TextView
+        style="@style/WeekIndicatorStyle"
+        android:text="二" />
+
+    <TextView
+        style="@style/WeekIndicatorStyle"
+        android:text="三" />
+
+    <TextView
+        style="@style/WeekIndicatorStyle"
+        android:text="四" />
+
+    <TextView
+        style="@style/WeekIndicatorStyle"
+        android:text="五" />
+
+    <TextView
+        style="@style/WeekIndicatorStyle"
+        android:text="六" />
+
+    <TextView
+        style="@style/WeekIndicatorStyle"
+        android:text="日" />
+
+</LinearLayout>

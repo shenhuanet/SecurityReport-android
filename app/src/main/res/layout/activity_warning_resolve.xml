@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWindowBackground"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:paddingTop="25dp">
+
+        <include layout="@layout/toolbar_me" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:divider="@drawable/shape_divider_gray"
+                app:showDividers="middle">
+
+                <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_marginStart="16dp"
+                        android:text="监测点名称" />
+
+                    <TextView
+                        style="@style/TextStyle.Gray"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="16dp"
+                        android:text="257号剩余电流传感器" />
+
+                </RelativeLayout>
+
+                <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_marginStart="16dp"
+                        android:text="设备编号" />
+
+                    <TextView
+                        style="@style/TextStyle.Gray"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="16dp"
+                        android:text="257号" />
+
+                </RelativeLayout>
+
+                <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_marginStart="16dp"
+                        android:text="所属网关" />
+
+                    <TextView
+                        style="@style/TextStyle.Gray"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="16dp"
+                        android:text="实验楼5号" />
+
+                </RelativeLayout>
+
+                <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_marginStart="16dp"
+                        android:text="报警情况" />
+
+                    <TextView
+                        style="@style/TextStyle.Gray"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="16dp"
+                        android:text="报警" />
+
+                </RelativeLayout>
+
+                <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_marginStart="16dp"
+                        android:text="开始时间" />
+
+                    <TextView
+                        style="@style/TextStyle.Gray"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="16dp"
+                        android:text="2017-07-29 11:05:28" />
+
+                </RelativeLayout>
+
+                <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_marginStart="16dp"
+                        android:text="结束时间" />
+
+                    <TextView
+                        style="@style/TextStyle.Gray"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="16dp"
+                        android:text="2017-07-29 11:05:28" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/white"
+                android:gravity="start"
+                android:hint="请填写备注信息"
+                android:inputType="text"
+                android:padding="10dp"
+                android:textColor="@color/colorText"
+                android:textColorHint="@color/colorGray1"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <Button
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_margin="16dp"
+        android:background="@drawable/shape_button_blue"
+        android:text="保存" />
+
+</LinearLayout>

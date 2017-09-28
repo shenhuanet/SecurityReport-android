@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SecurityReport</string>
+
+    <string-array name="module_titles">
+        <item>主页</item>
+        <item>监测点</item>
+        <item>我</item>
+    </string-array>
+</resources>

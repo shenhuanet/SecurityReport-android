@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:background="@color/colorGray" />
+
+        <TextView
+            style="@style/TextStyle.White"
+            android:layout_margin="10dp"
+            android:drawablePadding="5dp"
+            android:drawableStart="@drawable/ic_divider_rect"
+            android:text="数据预览"
+            android:textColor="@color/colorGray" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@color/colorGray" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="数量(个)"
+            android:textColor="@color/colorText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/shape_danger_blue"
+            android:text="存在隐患"
+            android:textColor="@color/colorText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/shape_realtime_orange"
+            android:text="实时报警量"
+            android:textColor="@color/colorText" />
+
+    </LinearLayout>
+
+    <!--折线图-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/aa_test_line" />
+
+</LinearLayout>

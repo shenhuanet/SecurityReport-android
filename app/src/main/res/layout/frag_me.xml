@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="user"
+            type="com.shenhua.outer.security.report.bean.User.DataBean" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:paddingTop="25dp">
+
+            <include layout="@layout/toolbar_me" />
+
+        </android.support.v7.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <com.shenhua.outer.security.report.view.widget.CircleImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/aa_test_line" />
+
+            <TextView
+                android:id="@+id/tvUsername"
+                style="@style/TextStyle.White"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="@{user.name}"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvRoleName"
+                style="@style/TextStyle.White"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_permission"
+                android:text="@{user.roleName}"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/shape_divider_dash"
+                android:layerType="software" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/logout"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_margin="40dp"
+            android:background="@drawable/shape_button_white"
+            android:text="退出"
+            android:textColor="@color/colorPrimary" />
+
+    </LinearLayout>
+
+</layout>

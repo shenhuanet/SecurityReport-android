@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_notify_text">8sp</dimen>
+    <dimen name="size_tab_title">12sp</dimen>
+</resources>

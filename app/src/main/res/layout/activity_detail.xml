@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWindowBackground"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:paddingTop="25dp">
+
+        <include layout="@layout/toolbar_me" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:divider="@drawable/shape_divider_gray"
+            app:showDividers="middle">
+
+            <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_marginStart="16dp"
+                    android:text="监测点名称" />
+
+                <TextView
+                    style="@style/TextStyle.Gray"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="257号剩余电流传感器" />
+
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_marginStart="16dp"
+                    android:text="所属网关" />
+
+                <TextView
+                    style="@style/TextStyle.Gray"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="网关1" />
+
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_marginStart="16dp"
+                    android:text="网关编号" />
+
+                <TextView
+                    style="@style/TextStyle.Gray"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="257" />
+
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_marginStart="16dp"
+                    android:text="故障电弧" />
+
+                <TextView
+                    style="@style/TextStyle.Gray"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="实验楼5号" />
+
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_marginStart="16dp"
+                    android:text="剩余电流" />
+
+                <TextView
+                    style="@style/TextStyle.Gray"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="报警" />
+
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_marginStart="16dp"
+                    android:text="温度感应" />
+
+                <TextView
+                    style="@style/TextStyle.Gray"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="隐患" />
+
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_marginStart="16dp"
+                    android:text="消防水压" />
+
+                <TextView
+                    style="@style/TextStyle.Gray"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="正常" />
+
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_marginStart="16dp"
+                    android:text="防火门" />
+
+                <TextView
+                    style="@style/TextStyle.Gray"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="正常" />
+
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                <TextView
+                    style="@style/TextStyle"
+                    android:layout_marginStart="16dp"
+                    android:text="火灾报警器" />
+
+                <TextView
+                    style="@style/TextStyle.Gray"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="正常" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp">
+
+        <Button
+            style="@style/ButtonStyle"
+            android:layout_width="0dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button_green"
+            android:text="消音" />
+
+        <Button
+            style="@style/ButtonStyle"
+            android:layout_width="0dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button_red"
+            android:text="复位" />
+
+    </LinearLayout>
+
+</LinearLayout>
