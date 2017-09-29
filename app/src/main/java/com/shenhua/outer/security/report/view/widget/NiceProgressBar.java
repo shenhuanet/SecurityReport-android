@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-import com.shenhua.outer.security.report.core.AndroidUtils;
+import com.shenhua.outer.security.report.core.utils.AndroidUtils;
 
 /**
  * Created by shenhua on 2017-09-27-0027.

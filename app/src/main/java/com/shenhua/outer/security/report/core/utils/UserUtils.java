@@ -1,4 +1,4 @@
-package com.shenhua.outer.security.report.core;
+package com.shenhua.outer.security.report.core.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -50,6 +50,10 @@ public class UserUtils {
         bean.setRoleId(sp.getInt("roleId", -1));
         bean.setRoleName(sp.getString("roleName", ""));
         return bean;
+    }
+
+    public synchronized int getUserId(Context context) {
+        return context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE).getInt("id", -1);
     }
 
     public synchronized boolean isLogin(Context context) {

@@ -1,4 +1,4 @@
-package com.shenhua.outer.security.report.core;
+package com.shenhua.outer.security.report.core.utils;
 
 /**
  * Created by shenhua on 2017-09-27-0027.

@@ -12,42 +12,44 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <TextView
-            android:clickable="true"
+        <ImageButton
             android:id="@+id/tvPre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/ic_left_normal" />
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_left_normal" />
 
         <TextView
             android:id="@+id/tvToolbarTitle"
             style="@style/TextStyle.White.Title"
             android:text="九月" />
 
-        <TextView
-            android:clickable="true"
+        <ImageButton
             android:id="@+id/tvNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:background="@drawable/ic_right_normal" />
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_right_normal" />
 
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/flWarning"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:clipChildren="false"
         android:orientation="horizontal"
         android:padding="5dp">
 
         <ImageView
+            android:id="@+id/ivWarning"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center"
@@ -55,6 +57,7 @@
             android:src="@drawable/ic_warning_selector" />
 
         <TextView
+            android:id="@+id/tvWarningCount"
             android:layout_width="14dp"
             android:layout_height="10dp"
             android:layout_gravity="end"

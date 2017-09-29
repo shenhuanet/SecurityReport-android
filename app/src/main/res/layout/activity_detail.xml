@@ -11,9 +11,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:paddingTop="25dp">
+        android:paddingTop="25dp"
+        app:contentInsetStartWithNavigation="0dp"
+        app:navigationIcon="@drawable/ic_back">
 
-        <include layout="@layout/toolbar_me" />
+        <TextView
+            style="@style/TextStyle.White.Title"
+            android:layout_gravity="center"
+            android:minHeight="?attr/actionBarSize"
+            android:text="详情" />
+
+        <ProgressBar
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:progressTint="@android:color/white"
+            android:visibility="gone" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -22,12 +36,11 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <android.support.v7.widget.LinearLayoutCompat
+        <LinearLayout
+            android:id="@+id/layoutDetailParent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:divider="@drawable/shape_divider_gray"
-            app:showDividers="middle">
+            android:orientation="vertical">
 
             <RelativeLayout style="@style/ItemLayoutStyle.White">
 
@@ -37,14 +50,18 @@
                     android:text="监测点名称" />
 
                 <TextView
+                    android:id="@+id/tvMonitorName"
                     style="@style/TextStyle.Gray"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="16dp"
-                    android:text="257号剩余电流传感器" />
+                    android:text="null" />
 
             </RelativeLayout>
 
-            <RelativeLayout style="@style/ItemLayoutStyle.White">
+            <!--网关及编号暂不显示-->
+            <RelativeLayout
+                style="@style/ItemLayoutStyle.White"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/TextStyle"
@@ -59,7 +76,9 @@
 
             </RelativeLayout>
 
-            <RelativeLayout style="@style/ItemLayoutStyle.White">
+            <RelativeLayout
+                style="@style/ItemLayoutStyle.White"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/TextStyle"
@@ -74,97 +93,144 @@
 
             </RelativeLayout>
 
-            <RelativeLayout style="@style/ItemLayoutStyle.White">
+            <!--检测项类型-->
+            <!--<RelativeLayout-->
+            <!--android:id="@+id/type1"-->
+            <!--style="@style/ItemLayoutStyle.White">-->
 
-                <TextView
-                    style="@style/TextStyle"
-                    android:layout_marginStart="16dp"
-                    android:text="故障电弧" />
+            <!--<TextView-->
+            <!--style="@style/TextStyle"-->
+            <!--android:layout_marginStart="16dp"-->
+            <!--android:text="故障电弧" />-->
 
-                <TextView
-                    style="@style/TextStyle.Gray"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="16dp"
-                    android:text="实验楼5号" />
+            <!--<TextView-->
+            <!--style="@style/TextStyle.Gray"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginEnd="16dp"-->
+            <!--android:text="实验楼5号" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-            <RelativeLayout style="@style/ItemLayoutStyle.White">
+            <!--<RelativeLayout-->
+            <!--android:id="@+id/type2"-->
+            <!--style="@style/ItemLayoutStyle.White">-->
 
-                <TextView
-                    style="@style/TextStyle"
-                    android:layout_marginStart="16dp"
-                    android:text="剩余电流" />
+            <!--<TextView-->
+            <!--style="@style/TextStyle"-->
+            <!--android:layout_marginStart="16dp"-->
+            <!--android:text="温度" />-->
 
-                <TextView
-                    style="@style/TextStyle.Gray"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="16dp"
-                    android:text="报警" />
+            <!--<TextView-->
+            <!--style="@style/TextStyle.Gray"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginEnd="16dp"-->
+            <!--android:text="报警" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-            <RelativeLayout style="@style/ItemLayoutStyle.White">
+            <!--<RelativeLayout-->
+            <!--android:id="@+id/type3"-->
+            <!--style="@style/ItemLayoutStyle.White">-->
 
-                <TextView
-                    style="@style/TextStyle"
-                    android:layout_marginStart="16dp"
-                    android:text="温度感应" />
+            <!--<TextView-->
+            <!--style="@style/TextStyle"-->
+            <!--android:layout_marginStart="16dp"-->
+            <!--android:text="剩余电流" />-->
 
-                <TextView
-                    style="@style/TextStyle.Gray"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="16dp"
-                    android:text="隐患" />
+            <!--<TextView-->
+            <!--style="@style/TextStyle.Gray"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginEnd="16dp"-->
+            <!--android:text="报警" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-            <RelativeLayout style="@style/ItemLayoutStyle.White">
+            <!--<RelativeLayout-->
+            <!--android:id="@+id/type6"-->
+            <!--style="@style/ItemLayoutStyle.White">-->
 
-                <TextView
-                    style="@style/TextStyle"
-                    android:layout_marginStart="16dp"
-                    android:text="消防水压" />
+            <!--<TextView-->
+            <!--style="@style/TextStyle"-->
+            <!--android:layout_marginStart="16dp"-->
+            <!--android:text="电流" />-->
 
-                <TextView
-                    style="@style/TextStyle.Gray"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="16dp"
-                    android:text="正常" />
+            <!--<TextView-->
+            <!--style="@style/TextStyle.Gray"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginEnd="16dp"-->
+            <!--android:text="隐患" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-            <RelativeLayout style="@style/ItemLayoutStyle.White">
+            <!--<RelativeLayout-->
+            <!--android:id="@+id/type7"-->
+            <!--style="@style/ItemLayoutStyle.White">-->
 
-                <TextView
-                    style="@style/TextStyle"
-                    android:layout_marginStart="16dp"
-                    android:text="防火门" />
+            <!--<TextView-->
+            <!--style="@style/TextStyle"-->
+            <!--android:layout_marginStart="16dp"-->
+            <!--android:text="电压" />-->
 
-                <TextView
-                    style="@style/TextStyle.Gray"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="16dp"
-                    android:text="正常" />
+            <!--<TextView-->
+            <!--style="@style/TextStyle.Gray"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginEnd="16dp"-->
+            <!--android:text="正常" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-            <RelativeLayout style="@style/ItemLayoutStyle.White">
+            <!--<RelativeLayout-->
+            <!--android:id="@+id/type8"-->
+            <!--style="@style/ItemLayoutStyle.White">-->
 
-                <TextView
-                    style="@style/TextStyle"
-                    android:layout_marginStart="16dp"
-                    android:text="火灾报警器" />
+            <!--<TextView-->
+            <!--style="@style/TextStyle"-->
+            <!--android:layout_marginStart="16dp"-->
+            <!--android:text="消防水压" />-->
 
-                <TextView
-                    style="@style/TextStyle.Gray"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="16dp"
-                    android:text="正常" />
+            <!--<TextView-->
+            <!--style="@style/TextStyle.Gray"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginEnd="16dp"-->
+            <!--android:text="正常" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-        </android.support.v7.widget.LinearLayoutCompat>
+            <!--<RelativeLayout-->
+            <!--android:id="@+id/type9"-->
+            <!--style="@style/ItemLayoutStyle.White">-->
+
+            <!--<TextView-->
+            <!--style="@style/TextStyle"-->
+            <!--android:layout_marginStart="16dp"-->
+            <!--android:text="防火门" />-->
+
+            <!--<TextView-->
+            <!--style="@style/TextStyle.Gray"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginEnd="16dp"-->
+            <!--android:text="正常" />-->
+
+            <!--</RelativeLayout>-->
+
+            <!--<RelativeLayout-->
+            <!--android:id="@+id/type10"-->
+            <!--style="@style/ItemLayoutStyle.White">-->
+
+            <!--<TextView-->
+            <!--style="@style/TextStyle"-->
+            <!--android:layout_marginStart="16dp"-->
+            <!--android:text="火灾报警器" />-->
+
+            <!--<TextView-->
+            <!--style="@style/TextStyle.Gray"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginEnd="16dp"-->
+            <!--android:text="正常" />-->
+
+            <!--</RelativeLayout>-->
+
+        </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 
@@ -177,6 +243,7 @@
         android:paddingStart="16dp">
 
         <Button
+            android:id="@+id/btnXiaoyin"
             style="@style/ButtonStyle"
             android:layout_width="0dp"
             android:layout_margin="8dp"
@@ -185,6 +252,7 @@
             android:text="消音" />
 
         <Button
+            android:id="@+id/btnFuwei"
             style="@style/ButtonStyle"
             android:layout_width="0dp"
             android:layout_margin="8dp"

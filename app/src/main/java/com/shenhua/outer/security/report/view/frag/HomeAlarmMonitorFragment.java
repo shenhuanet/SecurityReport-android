@@ -7,9 +7,15 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.shenhua.outer.security.report.R;
+import com.shenhua.outer.security.report.bean.EventWarningDetect;
+import com.shenhua.outer.security.report.core.BusProvider;
 import com.shenhua.outer.security.report.view.widget.NiceProgressBar;
+import com.squareup.otto.Subscribe;
+
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,10 +33,17 @@ public class HomeAlarmMonitorFragment extends Fragment {
     NiceProgressBar mWarningProgress;
     @BindView(R.id.progressOnline)
     NiceProgressBar mOnlineProgress;
+    @BindView(R.id.tvDectetAll)
+    TextView mAllDectetTv;
+    @BindView(R.id.tvDectetUnusual)
+    TextView mUnusualDectetTv;
+    @BindView(R.id.tvDectetOnline)
+    TextView mOnlineDectetTv;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BusProvider.get().register(this);
     }
 
     @Nullable
@@ -50,24 +63,37 @@ public class HomeAlarmMonitorFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initViews();
+        initViews(80, 50, 20);
     }
 
-    private void initViews() {
+    private void initViews(int all, int unusual, int online) {
         mCountProgress.setWheelColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-        mCountProgress.setStart(-60);
-        mCountProgress.setTextMax(80);
+        mCountProgress.setStart(-new Random().nextInt(90));
+        mCountProgress.setTextMax(all);
         mCountProgress.show();
+        mAllDectetTv.setText(String.valueOf(all));
 
         mWarningProgress.setWheelColor(ContextCompat.getColor(getContext(), R.color.colorRed4));
-        mWarningProgress.setStart(-90);
-        mWarningProgress.setTextMax(50);
+        mWarningProgress.setStart(-new Random().nextInt(90));
+        mWarningProgress.setTextMax(unusual);
         mWarningProgress.show();
+        mUnusualDectetTv.setText(String.valueOf(unusual));
 
         mOnlineProgress.setWheelColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        mOnlineProgress.setStart(20);
-        mOnlineProgress.setTextMax(20);
+        mOnlineProgress.setStart(-new Random().nextInt(90));
+        mOnlineProgress.setTextMax(online);
         mOnlineProgress.show();
+        mOnlineDectetTv.setText(String.valueOf(online));
     }
 
+    @Subscribe
+    public void setProgressData(EventWarningDetect event) {
+        initViews(event.getAll(), event.getUnusual(), event.getOnline());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        BusProvider.get().unregister(this);
+    }
 }

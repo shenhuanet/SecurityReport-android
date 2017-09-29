@@ -6,33 +6,32 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.igexin.sdk.PushManager;
 import com.shenhua.outer.security.report.R;
 import com.shenhua.outer.security.report.bean.User;
-import com.shenhua.outer.security.report.core.Contanst;
 import com.shenhua.outer.security.report.core.IService;
-import com.shenhua.outer.security.report.core.UserUtils;
+import com.shenhua.outer.security.report.core.RetrofitHelper;
+import com.shenhua.outer.security.report.core.service.GetuiIntentService;
+import com.shenhua.outer.security.report.core.service.GetuiPushService;
+import com.shenhua.outer.security.report.core.utils.UserUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Created by shenhua on 2017-09-27-0027.
  * Email shenhuanet@126.com
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.usernameLayout)
     LinearLayout mUsernameLayout;
@@ -50,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        PushManager.getInstance().initialize(this.getApplicationContext(), GetuiPushService.class);
+        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), GetuiIntentService.class);
         mUsernameEt.setOnFocusChangeListener((v, hasFocus) -> mUsernameLayout.setSelected(hasFocus));
         mPasswordEt.setOnFocusChangeListener((v, hasFocus) -> mPasswordLayout.setSelected(hasFocus));
     }
@@ -72,10 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("登录中,请稍候");
         dialog.show();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Contanst.BASE_URL)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        Call<User> user = retrofit.create(IService.class).login(username, password, clientId, 1);
+        Call<User> user = RetrofitHelper.get().getRetrofit().create(IService.class).login(username, password, clientId, 1);
         user.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

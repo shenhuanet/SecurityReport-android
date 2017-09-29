@@ -2,17 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
     android:gravity="center_vertical"
-    android:minHeight="40dp"
+    android:minHeight="48dp"
     android:orientation="horizontal">
 
-    <View
+    <ImageView
+        android:id="@+id/ivStationState"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="16dp"
-        android:background="@drawable/item_circle_red" />
+        android:src="@drawable/ic_status_selector" />
 
     <TextView
+        android:id="@+id/tvStationName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"

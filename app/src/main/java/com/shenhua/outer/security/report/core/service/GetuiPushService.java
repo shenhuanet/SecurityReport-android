@@ -1,4 +1,4 @@
-package com.shenhua.outer.security.report.core;
+package com.shenhua.outer.security.report.core.service;
 
 import android.app.Service;
 import android.content.Intent;

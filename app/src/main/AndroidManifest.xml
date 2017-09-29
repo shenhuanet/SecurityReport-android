@@ -21,6 +21,9 @@
         </activity>
 
         <activity android:name=".view.activity.MainActivity" />
+        <activity android:name=".view.activity.DetailActivity" />
+        <activity android:name=".view.activity.WarningActivity" />
+        <activity android:name=".view.activity.WaringResolveActivity" />
         <activity
             android:name=".view.activity.LoginActivity"
             android:configChanges="orientation"
@@ -28,12 +31,12 @@
             android:screenOrientation="portrait" />
 
         <service
-            android:name=".core.GetuiPushService"
+            android:name=".core.service.GetuiPushService"
             android:exported="false"
             android:label="PushService"
             android:process=":pushservice" />
 
-        <service android:name=".core.GetuiIntentService" />
+        <service android:name=".core.service.GetuiIntentService" />
 
     </application>
 

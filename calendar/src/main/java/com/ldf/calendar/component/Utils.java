@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Scroller;
@@ -315,5 +316,12 @@ public final class Utils {
 
     public static int loadTop() {
         return top;
+    }
+
+    public static String fitTwoLenght(String str) {
+        if (!TextUtils.isEmpty(str) && str.length() == 1) {
+            str = "0" + str;
+        }
+        return str;
     }
 }

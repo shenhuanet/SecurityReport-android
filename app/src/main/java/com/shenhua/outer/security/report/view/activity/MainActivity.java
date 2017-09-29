@@ -1,14 +1,9 @@
 package com.shenhua.outer.security.report.view.activity;
 
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import com.shenhua.outer.security.report.R;
@@ -24,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private Unbinder mUnBinder;
     @BindView(R.id.viewpager)
@@ -35,11 +30,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
         setContentView(R.layout.activity_main);
         mUnBinder = ButterKnife.bind(this);
         initViews();
@@ -53,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         final String[] titles = getResources().getStringArray(R.array.module_titles);
         FragmentAdapter mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), fragments, titles);
         mViewPager.setAdapter(mFragmentAdapter);
+        mViewPager.setOffscreenPageLimit(3);
         mTabLayout.setupWithViewPager(mViewPager);
         final int[] images = {R.drawable.ic_home_selector, R.drawable.ic_monitor_selector, R.drawable.ic_me_selector};
 
@@ -72,13 +63,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("shenhuaLog -- " + MainActivity.class.getSimpleName(), "onResume: ");
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        Log.d("shenhuaLog -- " + MainActivity.class.getSimpleName(), "onWindowFocusChanged: ");
     }
 
     @Override

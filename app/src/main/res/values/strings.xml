@@ -6,4 +6,42 @@
         <item>监测点</item>
         <item>我</item>
     </string-array>
+
+    <string-array name="warning_status">
+        <item>告警未通知</item>
+        <item>告警未查看</item>
+        <item>告警未处理</item>
+        <item>处理完毕</item>
+    </string-array>
+
+    <string-array name="warning_type">
+        <item>正常</item>
+        <item>警告</item>
+        <item>故障</item>
+        <item>掉线</item>
+        <item>隐患</item>
+    </string-array>
+
+    <string-array name="monitor_type">
+        <item>故障电弧</item>
+        <item>温度</item>
+        <item>剩余电流</item>
+        <item>保留字段</item>
+        <item>保留字段</item>
+        <item>电流</item>
+        <item>电压</item>
+        <item>消防水压</item>
+        <item>防火门</item>
+        <item>火灾报警器</item>
+    </string-array>
+
+    <string-array name="power_type">
+        <item>A相电压</item>
+        <item>B相电压</item>
+        <item>C相电压</item>
+        <item>AB相电压</item>
+        <item>BC相电压</item>
+        <item>CA相电压</item>
+    </string-array>
+
 </resources>

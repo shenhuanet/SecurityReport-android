@@ -21,7 +21,11 @@
             android:background="@color/colorPrimary"
             android:paddingTop="25dp">
 
-            <include layout="@layout/toolbar_me" />
+            <TextView
+                style="@style/TextStyle.White.Title"
+                android:layout_gravity="center"
+                android:minHeight="?attr/actionBarSize"
+                android:text="我" />
 
         </android.support.v7.widget.Toolbar>
 

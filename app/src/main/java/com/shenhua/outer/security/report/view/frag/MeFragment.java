@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.shenhua.outer.security.report.BR;
 import com.shenhua.outer.security.report.R;
 import com.shenhua.outer.security.report.bean.User;
-import com.shenhua.outer.security.report.core.UserUtils;
+import com.shenhua.outer.security.report.core.utils.UserUtils;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

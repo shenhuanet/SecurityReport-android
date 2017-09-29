@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.shenhua.outer.security.report.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +32,23 @@ public class LineChartWrapper {
     public LineChartWrapper(Context context, LineChart lineChart) {
         mContext = context;
         this.mLineChart = lineChart;
+    }
+
+    public void refresh(ArrayList<Integer> data) {
+        LineData oldData = mLineChart.getLineData();
+        if (oldData != null) {
+            oldData.removeDataSet(0);
+            oldData.notifyDataChanged();
+            mLineChart.notifyDataSetChanged();
+            mLineChart.invalidate();
+        }
+        List<Entry> entries = new ArrayList<>();
+        for (int i = 0; i < data.size(); i++) {
+            entries.add(new Entry(i, data.get(i)));
+        }
+        LineDataSet lineDataSet = setupDataSet(entries);
+        LineData lineData = setupLineData(lineDataSet);
+        mLineChart.setData(lineData);
     }
 
     public LineChart create(List<Entry> entryList) {
@@ -116,4 +134,6 @@ public class LineChartWrapper {
         base.setDrawGridLines(false);
         base.setDrawLabels(true);
     }
+
+
 }

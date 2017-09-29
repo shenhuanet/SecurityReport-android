@@ -3,6 +3,7 @@ package com.shenhua.outer.security.report.view.frag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,10 @@ import android.view.ViewGroup;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.shenhua.outer.security.report.R;
+import com.shenhua.outer.security.report.core.BusProvider;
+import com.shenhua.outer.security.report.bean.EventDate;
 import com.shenhua.outer.security.report.view.widget.LineChartWrapper;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +38,7 @@ public class HomeOverViewFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BusProvider.get().register(this);
     }
 
     @Nullable
@@ -42,7 +47,6 @@ public class HomeOverViewFragment extends Fragment {
         if (mRootView == null) {
             mRootView = inflater.inflate(R.layout.frag_home_overview, container, false);
             ButterKnife.bind(this, mRootView);
-            getLineData();
         }
         ViewGroup parent = (ViewGroup) mRootView.getParent();
         if (parent != null) {
@@ -55,7 +59,7 @@ public class HomeOverViewFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
+        getLineData();
 
     }
 
@@ -72,8 +76,27 @@ public class HomeOverViewFragment extends Fragment {
             mLineChartWrapper = new LineChartWrapper(getContext(), mLineChart);
             mLineChartWrapper.create(entries);
         }
-
-//        mLineChart.clear();
-
     }
+
+    @Subscribe
+    public void onDateChanged(EventDate date) {
+        Log.d("shenhuaLog -- " + HomeOverViewFragment.class.getSimpleName(), "onDateChanged: >>> " + date.toString());
+        mDatas.clear();
+        for (int i = 0; i < 24; i++) {
+            mDatas.add(i, new Random().nextInt(10));
+        }
+        mLineChartWrapper.refresh(mDatas);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        BusProvider.get().unregister(this);
+    }
+
 }

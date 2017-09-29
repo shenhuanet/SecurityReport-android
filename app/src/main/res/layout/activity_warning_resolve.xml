@@ -1,153 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWindowBackground"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <data>
+
+        <variable
+            name="data"
+            type="com.shenhua.outer.security.report.bean.WarningList.DataBean.ListBean" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:paddingTop="25dp">
+        android:layout_height="match_parent"
+        android:background="@color/colorWindowBackground"
+        android:orientation="vertical">
 
-        <include layout="@layout/toolbar_me" />
-
-    </android.support.v7.widget.Toolbar>
-
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <LinearLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@color/colorPrimary"
+            android:paddingTop="25dp"
+            app:navigationIcon="@drawable/ic_back">
 
-            <android.support.v7.widget.LinearLayoutCompat
+            <TextView
+                style="@style/TextStyle.White.Title"
+                android:layout_gravity="center"
+                android:minHeight="?attr/actionBarSize"
+                android:text="报警处理" />
+
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:divider="@drawable/shape_divider_gray"
-                app:showDividers="middle">
+                android:orientation="vertical">
 
-                <RelativeLayout style="@style/ItemLayoutStyle.White">
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:divider="@drawable/shape_divider_gray"
+                    app:showDividers="middle">
 
-                    <TextView
-                        style="@style/TextStyle"
-                        android:layout_marginStart="16dp"
-                        android:text="监测点名称" />
+                    <RelativeLayout style="@style/ItemLayoutStyle.White">
 
-                    <TextView
-                        style="@style/TextStyle.Gray"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="16dp"
-                        android:text="257号剩余电流传感器" />
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_marginStart="16dp"
+                            android:text="监测点名称" />
 
-                </RelativeLayout>
+                        <TextView
+                            style="@style/TextStyle.Gray"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="16dp"
+                            android:text="@{data.stationName}" />
 
-                <RelativeLayout style="@style/ItemLayoutStyle.White">
+                    </RelativeLayout>
 
-                    <TextView
-                        style="@style/TextStyle"
-                        android:layout_marginStart="16dp"
-                        android:text="设备编号" />
+                    <RelativeLayout style="@style/ItemLayoutStyle.White">
 
-                    <TextView
-                        style="@style/TextStyle.Gray"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="16dp"
-                        android:text="257号" />
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_marginStart="16dp"
+                            android:text="设备编号" />
 
-                </RelativeLayout>
+                        <TextView
+                            style="@style/TextStyle.Gray"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="16dp"
+                            android:text='@{" "+data.sensorId}' />
 
-                <RelativeLayout style="@style/ItemLayoutStyle.White">
+                    </RelativeLayout>
 
-                    <TextView
-                        style="@style/TextStyle"
-                        android:layout_marginStart="16dp"
-                        android:text="所属网关" />
+                    <RelativeLayout style="@style/ItemLayoutStyle.White">
 
-                    <TextView
-                        style="@style/TextStyle.Gray"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="16dp"
-                        android:text="实验楼5号" />
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_marginStart="16dp"
+                            android:text="所属网关" />
 
-                </RelativeLayout>
+                        <TextView
+                            style="@style/TextStyle.Gray"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="16dp"
+                            android:text="@{data.gatewayName}" />
 
-                <RelativeLayout style="@style/ItemLayoutStyle.White">
+                    </RelativeLayout>
 
-                    <TextView
-                        style="@style/TextStyle"
-                        android:layout_marginStart="16dp"
-                        android:text="报警情况" />
+                    <RelativeLayout style="@style/ItemLayoutStyle.White">
 
-                    <TextView
-                        style="@style/TextStyle.Gray"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="16dp"
-                        android:text="报警" />
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_marginStart="16dp"
+                            android:text="报警情况" />
 
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/tvStatus"
+                            style="@style/TextStyle.Gray"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="16dp"
+                            android:text="" />
 
-                <RelativeLayout style="@style/ItemLayoutStyle.White">
+                    </RelativeLayout>
 
-                    <TextView
-                        style="@style/TextStyle"
-                        android:layout_marginStart="16dp"
-                        android:text="开始时间" />
+                    <RelativeLayout style="@style/ItemLayoutStyle.White">
 
-                    <TextView
-                        style="@style/TextStyle.Gray"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="16dp"
-                        android:text="2017-07-29 11:05:28" />
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_marginStart="16dp"
+                            android:text="开始时间" />
 
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/tvStartTime"
+                            style="@style/TextStyle.Gray"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="16dp"
+                            android:text="" />
 
-                <RelativeLayout style="@style/ItemLayoutStyle.White">
+                    </RelativeLayout>
 
-                    <TextView
-                        style="@style/TextStyle"
-                        android:layout_marginStart="16dp"
-                        android:text="结束时间" />
+                    <RelativeLayout style="@style/ItemLayoutStyle.White">
 
-                    <TextView
-                        style="@style/TextStyle.Gray"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="16dp"
-                        android:text="2017-07-29 11:05:28" />
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_marginStart="16dp"
+                            android:text="结束时间" />
 
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/tvEndTime"
+                            style="@style/TextStyle.Gray"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="16dp"
+                            android:text="" />
 
-            </android.support.v7.widget.LinearLayoutCompat>
+                    </RelativeLayout>
 
-            <android.support.design.widget.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/white"
-                android:gravity="start"
-                android:hint="请填写备注信息"
-                android:inputType="text"
-                android:padding="10dp"
-                android:textColor="@color/colorText"
-                android:textColorHint="@color/colorGray1"
-                android:textSize="14sp" />
+                </android.support.v7.widget.LinearLayoutCompat>
 
-        </LinearLayout>
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/etResolve"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/white"
+                    android:gravity="start"
+                    android:hint="请填写备注信息"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:textColor="@color/colorText"
+                    android:textColorHint="@color/colorGray1"
+                    android:textSize="14sp" />
 
-    </android.support.v4.widget.NestedScrollView>
+            </LinearLayout>
 
-    <Button
-        style="@style/ButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_margin="16dp"
-        android:background="@drawable/shape_button_blue"
-        android:text="保存" />
+        </android.support.v4.widget.NestedScrollView>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btnResolve"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_margin="16dp"
+            android:background="@drawable/shape_button_blue"
+            android:enabled="false"
+            android:text="保存" />
+
+    </LinearLayout>
+
+</layout>
