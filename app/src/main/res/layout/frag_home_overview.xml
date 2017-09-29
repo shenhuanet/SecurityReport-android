@@ -60,6 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="16dp"
             android:drawablePadding="10dp"
             android:drawableStart="@drawable/shape_realtime_orange"
             android:text="实时报警量"

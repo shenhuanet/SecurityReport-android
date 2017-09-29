@@ -9,9 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ldf.calendar.component.CalendarDate;
 import com.ldf.calendar.component.CalendarViewAdapter;
+import com.ldf.calendar.component.Utils;
 import com.ldf.calendar.listener.OnSelectDateListener;
 import com.ldf.calendar.view.Calendar;
 import com.ldf.calendar.view.MonthPager;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 主页页面
@@ -37,6 +41,8 @@ public class HomeFragment extends Fragment {
     private View mRootView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.tvToolbarTitle)
+    TextView mToolbarTitleTv;
     @BindView(R.id.frameOverview)
     FrameLayout mOverviewFrame;
     @BindView(R.id.frameMonitor)
@@ -83,7 +89,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSelectDate(CalendarDate date) {
                 currentDate = date;
-                onDateChageed(date);
+                onDateChanged(date, true);
             }
 
             @Override
@@ -109,9 +115,7 @@ public class HomeFragment extends Fragment {
                 currentCalendars = calendarAdapter.getPagers();
                 if (currentCalendars.get(position % currentCalendars.size()) != null) {
                     currentDate = currentCalendars.get(position % currentCalendars.size()).getSeedDate();
-//                    textViewYearDisplay.setText(date.getYear() + "年");
-//                    textViewYearDisplay.setText(date.getYear() + "年" + date.getMonth() + "月"+date.getDay() +"日");
-//                    textViewMonthDisplay.setText(date.getMonth() + "");
+                    onDateChanged(currentDate, false);
                 }
             }
 
@@ -132,8 +136,24 @@ public class HomeFragment extends Fragment {
      *
      * @param date 选中的日期
      */
-    private void onDateChageed(CalendarDate date) {
+    private void onDateChanged(CalendarDate date, boolean needRefresh) {
+        if (date == null) {
+            return;
+        }
+        if (needRefresh) {
+            // 网络请求
+            Toast.makeText(getContext(), date.getYear() + "-" + date.getMonth() + "-" + date.getDay(), Toast.LENGTH_SHORT).show();
+        }
+        mToolbarTitleTv.setText(Utils.sMonth[date.getMonth() - 1]);
+    }
 
+    @OnClick({R.id.tvPre, R.id.tvNext})
+    void changePage(View view) {
+        if (view.getId() == R.id.tvPre) {
+            mMonthPager.setCurrentItem(mMonthPager.getCurrentPosition() + -1);
+        } else {
+            mMonthPager.setCurrentItem(mMonthPager.getCurrentPosition() + 1);
+        }
     }
 
     @Override

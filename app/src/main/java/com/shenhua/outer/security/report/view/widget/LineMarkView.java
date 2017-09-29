@@ -30,11 +30,12 @@ public class LineMarkView extends MarkerView {
 
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
-        tvContent.setText(String.valueOf((int) e.getY()));
+        tvContent.setText(" " + String.valueOf((int) e.getY()));
     }
 
     @Override
     public MPPointF getOffset() {
         return new MPPointF(-(getWidth() / 2), -getHeight());
     }
+
 }

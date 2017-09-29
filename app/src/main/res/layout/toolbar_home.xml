@@ -13,16 +13,21 @@
         android:orientation="horizontal">
 
         <TextView
+            android:clickable="true"
+            android:id="@+id/tvPre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:background="@drawable/ic_left_normal" />
 
         <TextView
+            android:id="@+id/tvToolbarTitle"
             style="@style/TextStyle.White.Title"
             android:text="九月" />
 
         <TextView
+            android:clickable="true"
+            android:id="@+id/tvNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

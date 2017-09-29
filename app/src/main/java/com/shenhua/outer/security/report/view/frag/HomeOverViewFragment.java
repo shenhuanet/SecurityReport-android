@@ -29,6 +29,7 @@ public class HomeOverViewFragment extends Fragment {
     @BindView(R.id.linechart)
     LineChart mLineChart;
     private ArrayList<Integer> mDatas = new ArrayList<>();
+    private LineChartWrapper mLineChartWrapper;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class HomeOverViewFragment extends Fragment {
         if (mRootView == null) {
             mRootView = inflater.inflate(R.layout.frag_home_overview, container, false);
             ButterKnife.bind(this, mRootView);
+            getLineData();
         }
         ViewGroup parent = (ViewGroup) mRootView.getParent();
         if (parent != null) {
@@ -53,7 +55,8 @@ public class HomeOverViewFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getLineData();
+
+
     }
 
     private void getLineData() {
@@ -65,8 +68,12 @@ public class HomeOverViewFragment extends Fragment {
             entries.add(new Entry(i, mDatas.get(i)));
         }
 //        Collections.sort(entries, new EntryXComparator());
-        mLineChart.clear();
-        new LineChartWrapper(getContext(), mLineChart).create(entries);
+        if (mLineChartWrapper == null) {
+            mLineChartWrapper = new LineChartWrapper(getContext(), mLineChart);
+            mLineChartWrapper.create(entries);
+        }
+
+//        mLineChart.clear();
 
     }
 }
