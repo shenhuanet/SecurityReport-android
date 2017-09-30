@@ -15,12 +15,7 @@
         style="@style/TextStyle.Gray"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="16dp"
+        android:padding="3dp"
         tools:text="实验楼5号" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorGray" />
 
 </RelativeLayout>

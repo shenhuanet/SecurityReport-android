@@ -2,6 +2,8 @@ package com.shenhua.outer.security.report.core.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.TextView;
 
 import com.ldf.calendar.component.CalendarDate;
 import com.shenhua.outer.security.report.R;
@@ -42,9 +44,24 @@ public class AndroidUtils {
         return (int) (pxValue / scale + 0.5f);
     }
 
+    public static String formatWarningStatus(Context context, int value) {
+        try {
+            String[] str = context.getResources().getStringArray(R.array.warning_status);
+            return str[value - 1];
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public static String formatWarningType(Context context, int value) {
-        String[] str = context.getResources().getStringArray(R.array.warning_type);
-        return str[value];
+        try {
+            String[] str = context.getResources().getStringArray(R.array.warning_type);
+            return str[value];
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static String formatTime(long time) {
@@ -85,5 +102,24 @@ public class AndroidUtils {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public static void showEmptyLoading(TextView emptyView) {
+        emptyView.setVisibility(View.VISIBLE);
+        emptyView.setText("数据加载中");
+    }
+
+    public static void showEmptyError(TextView emptyView) {
+        emptyView.setVisibility(View.VISIBLE);
+        emptyView.setText("数据错误");
+    }
+
+    public static void showEmptyNull(TextView emptyView) {
+        emptyView.setVisibility(View.VISIBLE);
+        emptyView.setText("数据为空");
+    }
+
+    public static void hideEmpty(TextView emptyView) {
+        emptyView.setVisibility(View.GONE);
     }
 }

@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.shenhua.outer.security.report.R;
 import com.shenhua.outer.security.report.adapter.BaseItemDecoration;
@@ -15,6 +18,7 @@ import com.shenhua.outer.security.report.adapter.WarningListAdapter;
 import com.shenhua.outer.security.report.bean.WarningList;
 import com.shenhua.outer.security.report.core.IService;
 import com.shenhua.outer.security.report.core.RetrofitHelper;
+import com.shenhua.outer.security.report.core.utils.AndroidUtils;
 import com.shenhua.outer.security.report.core.utils.UserUtils;
 import com.shenhua.outer.security.report.view.activity.WaringResolveActivity;
 
@@ -34,15 +38,19 @@ import retrofit2.Response;
  */
 public class WarningListFragment extends Fragment {
 
-    private View mRootView;
-
     public static WarningListFragment newInstance() {
         return new WarningListFragment();
     }
 
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.empty)
+    TextView mEmptyView;
 
+    private static final int PAGE_SIZE = 50;
+    private View mRootView;
     private List<WarningList.DataBean.ListBean> mDatas = new ArrayList<>();
     private WarningListAdapter mWarningListAdapter;
 
@@ -80,23 +88,35 @@ public class WarningListFragment extends Fragment {
         });
         mRecyclerView.setAdapter(mWarningListAdapter);
         mRecyclerView.addItemDecoration(new BaseItemDecoration(getContext()));
+        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        mSwipeRefreshLayout.setOnRefreshListener(this::initData);
         initData();
     }
 
     private void initData() {
+        mSwipeRefreshLayout.setRefreshing(true);
+        if (mDatas.size() == 0) {
+            AndroidUtils.showEmptyLoading(mEmptyView);
+        }
         RetrofitHelper.get().getRetrofit().create(IService.class)
-                .getWarningList(UserUtils.get().getUserId(getContext()), 1, 20)
+                .getWarningList(UserUtils.get().getUserId(getContext()), 1, PAGE_SIZE)
                 .enqueue(new Callback<WarningList>() {
                     @Override
                     public void onResponse(Call<WarningList> call, Response<WarningList> response) {
+                        mSwipeRefreshLayout.setRefreshing(false);
                         mDatas = response.body().getData().getList();
+                        if (mDatas.size() == 0) {
+                            AndroidUtils.showEmptyNull(mEmptyView);
+                        }
+                        AndroidUtils.hideEmpty(mEmptyView);
                         mWarningListAdapter.setDatas(mDatas);
                         mWarningListAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onFailure(Call<WarningList> call, Throwable t) {
-
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        AndroidUtils.showEmptyError(mEmptyView);
                     }
                 });
     }
@@ -110,4 +130,5 @@ public class WarningListFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
     }
+
 }

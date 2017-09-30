@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.shenhua.outer.security.report.R;
 import com.shenhua.outer.security.report.view.frag.WarningListFragment;
@@ -19,6 +20,8 @@ public class WarningActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.tvTitle)
+    TextView mTitleTv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,7 +31,7 @@ public class WarningActivity extends BaseActivity {
         mToolbar.setNavigationIcon(R.drawable.ic_back);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
-
+        mTitleTv.setText("报警列表");
         getSupportFragmentManager().beginTransaction().add(R.id.frameMonitorList,
                 WarningListFragment.newInstance()).commit();
     }

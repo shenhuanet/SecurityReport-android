@@ -1,13 +1,16 @@
 package com.shenhua.outer.security.report.view.frag;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shenhua.outer.security.report.R;
@@ -18,8 +21,10 @@ import com.shenhua.outer.security.report.bean.UserStations;
 import com.shenhua.outer.security.report.core.BusProvider;
 import com.shenhua.outer.security.report.core.IService;
 import com.shenhua.outer.security.report.core.RetrofitHelper;
+import com.shenhua.outer.security.report.core.utils.AndroidUtils;
 import com.shenhua.outer.security.report.core.utils.Contanst;
 import com.shenhua.outer.security.report.core.utils.UserUtils;
+import com.shenhua.outer.security.report.view.activity.DetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +42,7 @@ import retrofit2.Response;
  */
 public class MonitorListFragment extends Fragment {
 
-    public static MonitorListFragment newInstance(int pageId,int dataId) {
+    public static MonitorListFragment newInstance(int pageId, int dataId) {
         Bundle bundle = new Bundle();
         bundle.putInt("pageId", pageId);
         bundle.putInt("dataId", dataId);
@@ -46,15 +51,19 @@ public class MonitorListFragment extends Fragment {
         return fragment;
     }
 
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-
+    @BindView(R.id.empty)
+    TextView mEmptyView;
     private View mRootView;
     private List<UserStations.DataBean.ListBean> mStationsData = new ArrayList<>();
     private List<UserStations.DataBean.ListBean> mGateawysData = new ArrayList<>();
     private List<UserStations.DataBean.ListBean> mMonitoringsData = new ArrayList<>();
     private StationsAdapter mStationsAdapter;
     private int mCurrentPage = 0;
+    private static final int PAGE_SIZE = 30;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,6 +93,10 @@ public class MonitorListFragment extends Fragment {
     }
 
     private void initView() {
+        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            toGetData(getArguments().getInt("dataId"));
+        });
         switch (mCurrentPage) {
             case Contanst.PAGE_STATIONS:
                 mStationsAdapter = new StationsAdapter(getContext(), mStationsData);
@@ -101,9 +114,14 @@ public class MonitorListFragment extends Fragment {
         mRecyclerView.setAdapter(mStationsAdapter);
         mStationsAdapter.setOnItemClickListener((view, position, data) -> {
             if (!data.isHasChild()) {
+                if (mCurrentPage == Contanst.PAGE_MONITORS) {
+                    startActivity(new Intent(getContext(), DetailActivity.class)
+                            .putExtra("mMonitoringId", data.getId()));
+                }
                 return;
             }
-            BusProvider.get().post(new EventFragmentNav(mCurrentPage++, data.getId()));
+            // 特别注意: mCurrentPage不能使用++运算符
+            BusProvider.get().post(new EventFragmentNav(mCurrentPage + 1, data.getId()));
         });
     }
 
@@ -111,19 +129,23 @@ public class MonitorListFragment extends Fragment {
      * 2.获取网关下的监测点
      */
     private void getMonitoringByGateWayId(int id) {
-        Call<UserStations> call = RetrofitHelper.get().getRetrofit().create(IService.class).getMonitoringByGateWayId(id, 1, 10);
+        Call<UserStations> call = RetrofitHelper.get().getRetrofit().create(IService.class).getMonitoringByGateWayId(id, 1, PAGE_SIZE);
         call.enqueue(new Callback<UserStations>() {
             @Override
             public void onResponse(@Nullable Call<UserStations> call, @Nullable Response<UserStations> response) {
+                mSwipeRefreshLayout.setRefreshing(false);
                 if (response != null) {
                     mMonitoringsData = response.body().getData().getList();
                     mStationsAdapter.setDatas(mMonitoringsData);
+                } else {
+                    AndroidUtils.showEmptyNull(mEmptyView);
                 }
             }
 
             @Override
             public void onFailure(Call<UserStations> call, Throwable t) {
-
+                mSwipeRefreshLayout.setRefreshing(false);
+                AndroidUtils.showEmptyError(mEmptyView);
             }
         });
     }
@@ -132,19 +154,23 @@ public class MonitorListFragment extends Fragment {
      * 1.获取站点下的网关
      */
     private void getGateways(int id) {
-        Call<UserStations> call = RetrofitHelper.get().getRetrofit().create(IService.class).getGateways(id, 1, 10);
+        Call<UserStations> call = RetrofitHelper.get().getRetrofit().create(IService.class).getGateways(id, 1, PAGE_SIZE);
         call.enqueue(new Callback<UserStations>() {
             @Override
             public void onResponse(@Nullable Call<UserStations> call, @Nullable Response<UserStations> response) {
+                mSwipeRefreshLayout.setRefreshing(false);
                 if (response != null) {
                     mGateawysData = response.body().getData().getList();
                     mStationsAdapter.setDatas(mGateawysData);
+                } else {
+                    AndroidUtils.showEmptyNull(mEmptyView);
                 }
             }
 
             @Override
             public void onFailure(Call<UserStations> call, Throwable t) {
-
+                mSwipeRefreshLayout.setRefreshing(false);
+                AndroidUtils.showEmptyError(mEmptyView);
             }
         });
     }
@@ -155,16 +181,18 @@ public class MonitorListFragment extends Fragment {
     private void getStations() {
         int userId = UserUtils.get().getUserId(getContext());
         if (userId == -1) {
+            mSwipeRefreshLayout.setRefreshing(false);
             return;
         }
-        Call<UserStations> call = RetrofitHelper.get().getRetrofit().create(IService.class).getStations(userId, 1, 10);
+        Call<UserStations> call = RetrofitHelper.get().getRetrofit().create(IService.class).getStations(userId, 1, PAGE_SIZE);
         call.enqueue(new Callback<UserStations>() {
             @Override
             public void onResponse(@Nullable Call<UserStations> call, @Nullable Response<UserStations> response) {
+                mSwipeRefreshLayout.setRefreshing(false);
                 if (response == null) {
+                    AndroidUtils.showEmptyNull(mEmptyView);
                     return;
                 }
-                Log.d("shenhuaLog -- " + MonitorListFragment.class.getSimpleName(), "onResponse: " + response.raw().toString());
                 if (response.isSuccessful()) {
                     if (response.body().getData() != null) {
                         List<UserStations.DataBean.ListBean> datas = response.body().getData().getList();
@@ -172,12 +200,15 @@ public class MonitorListFragment extends Fragment {
                         mStationsAdapter.setDatas(mStationsData);
                     }
                 } else {
+                    AndroidUtils.showEmptyNull(mEmptyView);
                     Toast.makeText(getContext(), "数据获取失败", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@Nullable Call<UserStations> call, @Nullable Throwable t) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                AndroidUtils.showEmptyError(mEmptyView);
                 if (mStationsData.size() == 0) {
                     Toast.makeText(getContext(), "服务器异常 " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -189,19 +220,23 @@ public class MonitorListFragment extends Fragment {
      * 分发数据获取
      */
     public void toGetData(int stationId) {
+        mSwipeRefreshLayout.setRefreshing(true);
         switch (mCurrentPage) {
             case Contanst.PAGE_STATIONS:
                 if (mStationsData.size() == 0)
                     getStations();
+                else mSwipeRefreshLayout.setRefreshing(false);
                 break;
             case Contanst.PAGE_GATEWAYS:
                 if (mGateawysData.size() == 0)
                     getGateways(stationId);
+                else mSwipeRefreshLayout.setRefreshing(false);
                 break;
             case Contanst.PAGE_MONITORS:
                 if (mMonitoringsData.size() == 0)
                     getMonitoringByGateWayId(stationId);
-                    break;
+                else mSwipeRefreshLayout.setRefreshing(false);
+                break;
         }
     }
 

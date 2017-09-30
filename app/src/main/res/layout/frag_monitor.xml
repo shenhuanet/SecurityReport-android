@@ -12,10 +12,10 @@
         android:paddingTop="25dp">
 
         <TextView
+            android:id="@+id/tvTitle"
             style="@style/TextStyle.White.Title"
             android:layout_gravity="center"
-            android:minHeight="?attr/actionBarSize"
-            android:text="站点" />
+            android:minHeight="?attr/actionBarSize" />
 
     </android.support.v7.widget.Toolbar>
 

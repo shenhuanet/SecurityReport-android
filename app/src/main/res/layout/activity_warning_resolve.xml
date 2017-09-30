@@ -106,7 +106,7 @@
                             style="@style/TextStyle.Gray"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="16dp"
-                            android:text="@{AndroidUtils.formatWarningType(context,data.warningStatus)}" />
+                            android:text="@{AndroidUtils.formatWarningStatus(context,data.warningStatus)}" />
 
                     </RelativeLayout>
 

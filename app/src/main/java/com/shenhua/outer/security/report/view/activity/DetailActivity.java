@@ -3,10 +3,10 @@ package com.shenhua.outer.security.report.view.activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +36,7 @@ public class DetailActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.layoutDetailParent)
-    LinearLayout mDetailParentLayout;
+    LinearLayoutCompat mDetailParentLayout;
     @BindView(R.id.tvMonitorName)
     TextView mMonitorNameTv;
     @BindView(R.id.btnXiaoyin)
@@ -57,7 +57,6 @@ public class DetailActivity extends BaseActivity {
 
         mMonitoringId = getIntent().getIntExtra("mMonitoringId", -1);
         if (mMonitoringId != -1) {
-
             getDatial(mMonitoringId);
         } else {
             mMonitorNameTv.setText("监测点id为空");
@@ -82,17 +81,14 @@ public class DetailActivity extends BaseActivity {
                         MonitorInfo.DataBean.SensorsBean sensorsBean;
                         String[] typeKey = getResources().getStringArray(R.array.monitor_type);
                         MonitorTypeLayout layout;
-                        String value;
                         for (int i = 0; i < sensors.size(); i++) {
                             sensorsBean = sensors.get(i);
-                            if (sensorsBean.getWarningTotal() > 0) {
-                                value = "报警: " + sensorsBean.getWarningTotal();
-                            } else {
-                                value = "正常";
-                            }
+                            // SensorType 附件3
+                            // warningTotal 附件2
                             layout = new MonitorTypeLayout(DetailActivity.this,
-                                    typeKey[sensorsBean.getId()],
-                                    value);
+                                    typeKey[sensorsBean.getSensorType() - 1],
+                                    sensorsBean.getWarningTotal(),
+                                    sensorsBean.getReadValue());
                             mDetailParentLayout.addView(layout);
                         }
                     }

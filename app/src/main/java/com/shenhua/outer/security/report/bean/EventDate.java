@@ -14,7 +14,6 @@ public class EventDate {
 
     @Override
     public String toString() {
-
         return date;
     }
 }

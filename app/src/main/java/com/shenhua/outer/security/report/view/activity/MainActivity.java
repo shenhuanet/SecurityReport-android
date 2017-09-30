@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shenhua.outer.security.report.R;
 import com.shenhua.outer.security.report.adapter.FragmentAdapter;
@@ -14,6 +16,8 @@ import com.shenhua.outer.security.report.view.frag.MonitorFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +26,7 @@ import butterknife.Unbinder;
 public class MainActivity extends BaseActivity {
 
     private Unbinder mUnBinder;
+    private static Boolean isExit = false;
     @BindView(R.id.viewpager)
     ViewPager mViewPager;
     @BindView(R.id.tabLayout)
@@ -89,5 +94,31 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                getSupportFragmentManager().popBackStack();
+                return false;
+            }
+            Timer tExit;
+            if (!isExit) {
+                isExit = true;
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                tExit = new Timer();
+                tExit.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        isExit = false;
+                    }
+                }, 2000);
+            } else {
+                this.finish();
+                System.exit(0);
+            }
+        }
+        return false;
     }
 }

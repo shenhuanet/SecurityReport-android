@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -91,9 +92,15 @@ public class HomeOverViewFragment extends Fragment {
                     @Override
                     public void onResponse(Call<OneDayChart> call, Response<OneDayChart> response) {
                         ArrayList<String> list = AndroidUtils.ConvertObjToList(response.body().getData());
+                        if (list == null || list.size() != 24) {
+                            Toast.makeText(getContext(), "实时数据预览数据格式有误", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         mDatas.clear();
-                        for (int i = list.size() - 2; i >= 0; i--) {
-                            mDatas.add(Integer.parseInt(list.get(i)));
+                        int index = list.size() - 1;
+                        for (int i = index; i >= 0; i--) {
+                            // 反向添加
+                            mDatas.add(Math.abs(i - index), Integer.parseInt(list.get(i)));
                         }
                         mLineChartWrapper.refresh(mDatas);
                     }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -54,7 +55,6 @@ public class HomeFragment extends Fragment {
         return new HomeFragment();
     }
 
-    private View mRootView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.swipeRefreshLayout)
@@ -72,6 +72,7 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.calendarView)
     MonthPager mMonthPager;
 
+    private View mRootView;
     private ArrayList<Calendar> currentCalendars = new ArrayList<>();
     private CalendarViewAdapter calendarAdapter;
     private CalendarDate currentDate;
@@ -99,6 +100,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void initView() {
+        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         getFragmentManager().beginTransaction().add(R.id.frameOverview, new HomeOverViewFragment())
                 .commit();
         getFragmentManager().beginTransaction().add(R.id.frameMonitor, new HomeAlarmMonitorFragment())

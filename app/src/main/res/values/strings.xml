@@ -14,6 +14,22 @@
         <item>处理完毕</item>
     </string-array>
 
+    <string-array name="warning_type_color">
+        <item>@color/colorAccent</item>
+        <item>@color/colorRed</item>
+        <item>@color/colorGray</item>
+        <item>@color/colorGray1</item>
+        <item>@color/colorOrange</item>
+    </string-array>
+
+    <string-array name="warning_type_bg">
+        <item>@drawable/bg_warning_tatus_regular</item>
+        <item>@drawable/bg_warning_tatus_warning</item>
+        <item>@drawable/bg_warning_tatus_break</item>
+        <item>@drawable/bg_warning_tatus_offline</item>
+        <item>@drawable/bg_warning_tatus_danger</item>
+    </string-array>
+
     <string-array name="warning_type">
         <item>正常</item>
         <item>警告</item>
