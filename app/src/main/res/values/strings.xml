@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SecurityReport</string>
+    <string name="app_name">安防监控</string>
 
     <string-array name="module_titles">
         <item>主页</item>

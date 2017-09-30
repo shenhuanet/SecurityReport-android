@@ -9,7 +9,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders = [
@@ -26,10 +26,47 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+        beta {
+            buildConfigField "int", "ENV_TYPE", "1"
+            applicationId 'com.shenhua.outer.security.report.beta'
+            manifestPlaceholders = [
+                    app_name: "安防监控-beta"
+            ]
+        }
+        rc {
+            buildConfigField "int", "ENV_TYPE", "2"
+            applicationId 'com.shenhua.outer.security.report.rc'
+            manifestPlaceholders = [
+                    app_name: "安防监控-rc"
+            ]
+        }
+        rel {
+            buildConfigField "int", "ENV_TYPE", "0"
+            applicationId 'com.shenhua.outer.security.report'
+            manifestPlaceholders = [
+                    app_name: "安防监控"
+            ]
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            File file = new File(getProjectDir().parent + File.separator + "apks")
+            if (!file.exists()) {
+                file.mkdir();
+            }
+            def fileName = outputFile.name.replace("app", "SecurityReport"
+                    + "-V${defaultConfig.versionName}")
+            output.outputFile = new File(file, fileName)
+        }
+    }
+
     dataBinding {
         enabled = true
     }
