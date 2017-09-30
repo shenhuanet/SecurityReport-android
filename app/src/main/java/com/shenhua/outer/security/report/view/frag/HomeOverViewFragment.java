@@ -3,7 +3,6 @@ package com.shenhua.outer.security.report.view.frag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,17 +10,24 @@ import android.view.ViewGroup;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.shenhua.outer.security.report.R;
-import com.shenhua.outer.security.report.core.BusProvider;
 import com.shenhua.outer.security.report.bean.EventDate;
+import com.shenhua.outer.security.report.bean.OneDayChart;
+import com.shenhua.outer.security.report.core.BusProvider;
+import com.shenhua.outer.security.report.core.IService;
+import com.shenhua.outer.security.report.core.RetrofitHelper;
+import com.shenhua.outer.security.report.core.utils.AndroidUtils;
+import com.shenhua.outer.security.report.core.utils.UserUtils;
 import com.shenhua.outer.security.report.view.widget.LineChartWrapper;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by shenhua on 2017-09-26-0026.
@@ -34,6 +40,7 @@ public class HomeOverViewFragment extends Fragment {
     LineChart mLineChart;
     private ArrayList<Integer> mDatas = new ArrayList<>();
     private LineChartWrapper mLineChartWrapper;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,20 +59,13 @@ public class HomeOverViewFragment extends Fragment {
         if (parent != null) {
             parent.removeView(mRootView);
         }
+        initLinechart();
         return mRootView;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        getLineData();
-
-    }
-
-    private void getLineData() {
+    private void initLinechart() {
         for (int i = 0; i < 24; i++) {
-            mDatas.add(i, new Random().nextInt(10));
+            mDatas.add(i, 0);
         }
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < mDatas.size(); i++) {
@@ -78,14 +78,31 @@ public class HomeOverViewFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
     @Subscribe
     public void onDateChanged(EventDate date) {
-        Log.d("shenhuaLog -- " + HomeOverViewFragment.class.getSimpleName(), "onDateChanged: >>> " + date.toString());
-        mDatas.clear();
-        for (int i = 0; i < 24; i++) {
-            mDatas.add(i, new Random().nextInt(10));
-        }
-        mLineChartWrapper.refresh(mDatas);
+        RetrofitHelper.get().getRetrofit().create(IService.class)
+                .getOneDayCount(date.toString(), UserUtils.get().getUserId(getContext()))
+                .enqueue(new Callback<OneDayChart>() {
+                    @Override
+                    public void onResponse(Call<OneDayChart> call, Response<OneDayChart> response) {
+                        ArrayList<String> list = AndroidUtils.ConvertObjToList(response.body().getData());
+                        mDatas.clear();
+                        for (int i = list.size() - 2; i >= 0; i--) {
+                            mDatas.add(Integer.parseInt(list.get(i)));
+                        }
+                        mLineChartWrapper.refresh(mDatas);
+                    }
+
+                    @Override
+                    public void onFailure(Call<OneDayChart> call, Throwable t) {
+
+                    }
+                });
     }
 
     @Override

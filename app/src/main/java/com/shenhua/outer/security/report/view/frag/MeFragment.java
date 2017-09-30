@@ -1,5 +1,6 @@
 package com.shenhua.outer.security.report.view.frag;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import com.shenhua.outer.security.report.BR;
 import com.shenhua.outer.security.report.R;
 import com.shenhua.outer.security.report.bean.User;
 import com.shenhua.outer.security.report.core.utils.UserUtils;
+import com.shenhua.outer.security.report.view.activity.LoginActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -67,6 +69,9 @@ public class MeFragment extends Fragment {
     @OnClick(R.id.logout)
     void logout(View view) {
         Toast.makeText(getContext(), "退出登录", Toast.LENGTH_SHORT).show();
+        UserUtils.get().logout(getContext());
+        startActivity(new Intent(getContext(), LoginActivity.class));
+        getActivity().finish();
     }
 
     @Override

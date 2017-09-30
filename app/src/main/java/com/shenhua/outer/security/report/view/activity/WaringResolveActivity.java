@@ -11,14 +11,12 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shenhua.outer.security.report.R;
 import com.shenhua.outer.security.report.bean.WarningList;
 import com.shenhua.outer.security.report.core.IService;
 import com.shenhua.outer.security.report.core.RetrofitHelper;
-import com.shenhua.outer.security.report.core.utils.AndroidUtils;
 import com.shenhua.outer.security.report.databinding.ActivityWarningResolveBinding;
 
 import org.json.JSONObject;
@@ -38,12 +36,6 @@ public class WaringResolveActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.tvStartTime)
-    TextView mStartTimeTv;
-    @BindView(R.id.tvEndTime)
-    TextView mEndTimeTv;
-    @BindView(R.id.tvStatus)
-    TextView mStatusTv;
     @BindView(R.id.etResolve)
     TextInputEditText mResolveEt;
     @BindView(R.id.btnResolve)
@@ -61,9 +53,6 @@ public class WaringResolveActivity extends BaseActivity {
         if (data != null) {
             binding.setData(data);
             mWarningId = data.getId();
-            mStatusTv.setText(AndroidUtils.formatWarningType(this, data.getWarningStatus()));
-            mStartTimeTv.setText(AndroidUtils.formatTime(data.getStartTime()));
-            mEndTimeTv.setText(AndroidUtils.formatTime(data.getEndTime()));
         }
 
         mResolveEt.addTextChangedListener(new TextWatcher() {

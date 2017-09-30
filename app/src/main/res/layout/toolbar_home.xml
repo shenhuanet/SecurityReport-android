@@ -65,6 +65,7 @@
             android:background="@drawable/shape_notify"
             android:gravity="center"
             android:text="500"
+            android:visibility="invisible"
             android:textColor="@android:color/white"
             android:textSize="@dimen/size_notify_text" />
 

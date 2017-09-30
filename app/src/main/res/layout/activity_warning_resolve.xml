@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="com.shenhua.outer.security.report.core.utils.AndroidUtils" />
+
         <variable
             name="data"
             type="com.shenhua.outer.security.report.bean.WarningList.DataBean.ListBean" />
@@ -101,11 +103,10 @@
                             android:text="报警情况" />
 
                         <TextView
-                            android:id="@+id/tvStatus"
                             style="@style/TextStyle.Gray"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="16dp"
-                            android:text="" />
+                            android:text="@{AndroidUtils.formatWarningType(context,data.warningStatus)}" />
 
                     </RelativeLayout>
 
@@ -117,11 +118,10 @@
                             android:text="开始时间" />
 
                         <TextView
-                            android:id="@+id/tvStartTime"
                             style="@style/TextStyle.Gray"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="16dp"
-                            android:text="" />
+                            android:text="@{AndroidUtils.formatTime(data.startTime)}" />
 
                     </RelativeLayout>
 
@@ -133,11 +133,10 @@
                             android:text="结束时间" />
 
                         <TextView
-                            android:id="@+id/tvEndTime"
                             style="@style/TextStyle.Gray"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="16dp"
-                            android:text="" />
+                            android:text="@{AndroidUtils.formatTime(data.endTime)}" />
 
                     </RelativeLayout>
 

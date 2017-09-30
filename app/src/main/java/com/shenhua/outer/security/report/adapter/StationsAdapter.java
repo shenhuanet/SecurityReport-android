@@ -3,6 +3,7 @@ package com.shenhua.outer.security.report.adapter;
 import android.content.Context;
 import android.text.TextUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.shenhua.outer.security.report.R;
 import com.shenhua.outer.security.report.bean.UserStations;
@@ -29,5 +30,7 @@ public class StationsAdapter extends BaseRecyclerAdapter<UserStations.DataBean.L
         holder.setText(R.id.tvStationName, TextUtils.isEmpty(item.getName()) ? "未命名" : item.getName());
         ImageView view = (ImageView) holder.getView(R.id.ivStationState);
         view.setImageLevel(item.getStatus() < 0 ? 0 : item.getStatus());
+        TextView tvHasChild = (TextView) holder.getView(R.id.tvHasChild);
+        tvHasChild.setEnabled(item.isHasChild());
     }
 }

@@ -1,10 +1,14 @@
 package com.shenhua.outer.security.report.core.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 
+import com.ldf.calendar.component.CalendarDate;
 import com.shenhua.outer.security.report.R;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -13,8 +17,6 @@ import java.util.Locale;
  * Email shenhuanet@126.com
  */
 public class AndroidUtils {
-
-    private static final String[] WARNING_TYPE = {"正常", "警告", ""};
 
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
@@ -48,5 +50,40 @@ public class AndroidUtils {
     public static String formatTime(long time) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         return dateFormat.format(new Date(time));
+    }
+
+    public static String fitTwoLenght(String str) {
+        if (!TextUtils.isEmpty(str) && str.length() == 1) {
+            str = "0" + str;
+        }
+        return str;
+    }
+
+    public static String formatData(CalendarDate date) {
+        return date.getYear() + "-"
+                + fitTwoLenght(String.valueOf(date.getMonth())) + "-"
+                + fitTwoLenght(String.valueOf(date.getDay()));
+    }
+
+    public static ArrayList<String> ConvertObjToList(Object obj) {
+        ArrayList<String> list = new ArrayList<>();
+        if (obj == null)
+            return null;
+        Field[] fields = obj.getClass().getDeclaredFields();
+        try {
+            for (Field field : fields) {
+                try {
+                    Field f = obj.getClass().getDeclaredField(field.getName());
+                    f.setAccessible(true);
+                    Object o = f.get(obj);
+                    list.add(o.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

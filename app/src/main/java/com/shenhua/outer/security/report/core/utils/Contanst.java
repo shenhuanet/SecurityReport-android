@@ -11,4 +11,8 @@ public class Contanst {
     public static final String GETUI_APPID = "bTHXq07Xka5jvFQTvhrvn5";
     public static final String GETUI_APPKEY = "j2PULw7cOWAJDmm0ejNmG8";
     public static final String GETUI_MASTER_SECRET = "Ui22V4AD227Hd39640nwT3";
+
+    public static final int PAGE_STATIONS = 0;
+    public static final int PAGE_GATEWAYS = 1;
+    public static final int PAGE_MONITORS = 2;
 }

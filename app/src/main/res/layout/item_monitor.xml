@@ -25,9 +25,11 @@
         android:textColor="@color/colorText" />
 
     <TextView
+        android:id="@+id/tvHasChild"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/ic_right_normal" />
+        android:background="@drawable/ic_right_selector"
+        android:enabled="false" />
 
 </LinearLayout>

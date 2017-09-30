@@ -30,7 +30,11 @@ public class LineMarkView extends MarkerView {
 
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
-        tvContent.setText(" " + String.valueOf((int) e.getY()));
+        if (e.getY() < 10) {
+            tvContent.setText(" " + String.valueOf((int) e.getY()));
+        }else {
+            tvContent.setText(String.valueOf((int) e.getY()));
+        }
     }
 
     @Override

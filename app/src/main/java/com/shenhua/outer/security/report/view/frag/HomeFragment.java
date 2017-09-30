@@ -2,8 +2,10 @@ package com.shenhua.outer.security.report.view.frag;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +29,7 @@ import com.shenhua.outer.security.report.bean.WarningCount;
 import com.shenhua.outer.security.report.core.BusProvider;
 import com.shenhua.outer.security.report.core.IService;
 import com.shenhua.outer.security.report.core.RetrofitHelper;
+import com.shenhua.outer.security.report.core.utils.AndroidUtils;
 import com.shenhua.outer.security.report.core.utils.UserUtils;
 import com.shenhua.outer.security.report.view.activity.WarningActivity;
 import com.shenhua.outer.security.report.view.widget.CustomDayView;
@@ -54,6 +57,8 @@ public class HomeFragment extends Fragment {
     private View mRootView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.ivWarning)
     ImageView mWarningIv;
     @BindView(R.id.tvWarningCount)
@@ -161,9 +166,7 @@ public class HomeFragment extends Fragment {
         }
         mToolbarTitleTv.setText(Utils.sMonth[date.getMonth() - 1]);
         if (needRefresh) {
-            BusProvider.get().post(new EventDate(date.getYear() + "-"
-                    + Utils.fitTwoLenght(String.valueOf(date.getMonth())) + "-"
-                    + Utils.fitTwoLenght(String.valueOf(date.getDay()))));
+            BusProvider.get().post(new EventDate(AndroidUtils.formatData(date)));
         }
     }
 
@@ -180,31 +183,34 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (!isInit) {
-            RetrofitHelper.get().getRetrofit().create(IService.class)
-                    .getWarningCount(UserUtils.get().getUserId(getContext()))
-                    .enqueue(new Callback<WarningCount>() {
-                        @Override
-                        public void onResponse(Call<WarningCount> call, Response<WarningCount> response) {
-                            setWarning(response.body().isSuccess(), response.body().getData().getWarning());
-                            setWarningDetect(response.body().getData());
-                        }
-
-                        @Override
-                        public void onFailure(Call<WarningCount> call, Throwable t) {
-                            setWarning(false, 0);
-                        }
-                    });
+            mSwipeRefreshLayout.setRefreshing(true);
+            new Handler().postDelayed(this::refresh, 1500);
+            mSwipeRefreshLayout.setOnRefreshListener(() -> {
+                new Handler().postDelayed(this::refresh, 1500);
+            });
             isInit = true;
         }
     }
 
     /**
-     * 传递报警数据
-     *
-     * @param data WarningCount.DataBean data
+     * 获取报警数
      */
-    private void setWarningDetect(WarningCount.DataBean data) {
-        BusProvider.get().post(new EventWarningDetect(data.getUnusual(), data.getOnLine(), data.getAll()));
+    private void getWarningCount() {
+        RetrofitHelper.get().getRetrofit().create(IService.class)
+                .getWarningCount(UserUtils.get().getUserId(getContext()))
+                .enqueue(new Callback<WarningCount>() {
+                    @Override
+                    public void onResponse(Call<WarningCount> call, Response<WarningCount> response) {
+                        setWarning(response.body().isSuccess(), response.body().getData().getWarning());
+                        WarningCount.DataBean data = response.body().getData();
+                        BusProvider.get().post(new EventWarningDetect(data.getUnusual(), data.getOnLine(), data.getAll()));
+                    }
+
+                    @Override
+                    public void onFailure(Call<WarningCount> call, Throwable t) {
+                        setWarning(false, 0);
+                    }
+                });
     }
 
     /**
@@ -232,5 +238,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    private void refresh() {
+        mSwipeRefreshLayout.setRefreshing(false);
+        getWarningCount();
+        BusProvider.get().post(new EventDate(AndroidUtils.formatData(currentDate)));
     }
 }

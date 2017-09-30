@@ -1,6 +1,7 @@
 package com.shenhua.outer.security.report.core;
 
 import com.shenhua.outer.security.report.bean.MonitorInfo;
+import com.shenhua.outer.security.report.bean.OneDayChart;
 import com.shenhua.outer.security.report.bean.User;
 import com.shenhua.outer.security.report.bean.UserStations;
 import com.shenhua.outer.security.report.bean.WarningCount;
@@ -15,6 +16,16 @@ import retrofit2.http.Query;
  * Email shenhuanet@126.com
  */
 public interface IService {
+
+    /**
+     * 获取一天内的报警数量
+     *
+     * @param startTime 时间
+     * @param userId    用户id
+     * @return String
+     */
+    @POST("app/getOneDayCount")
+    Call<OneDayChart> getOneDayCount(@Query("startTime") String startTime, @Query("userId") int userId);
 
     /**
      * 报警处理
