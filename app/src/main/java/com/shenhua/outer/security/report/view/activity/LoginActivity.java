@@ -21,6 +21,8 @@ import com.shenhua.outer.security.report.core.service.GetuiIntentService;
 import com.shenhua.outer.security.report.core.service.GetuiPushService;
 import com.shenhua.outer.security.report.core.utils.UserUtils;
 
+import java.net.ConnectException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -93,7 +95,12 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
+                t.printStackTrace();
                 dialog.dismiss();
+                if (t instanceof ConnectException) {
+                    Toast.makeText(LoginActivity.this, "登录失败:访问被拒绝!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Toast.makeText(LoginActivity.this, "登录失败:" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
