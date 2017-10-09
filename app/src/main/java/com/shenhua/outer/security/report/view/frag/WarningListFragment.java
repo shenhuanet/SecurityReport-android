@@ -2,15 +2,19 @@ package com.shenhua.outer.security.report.view.frag;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shenhua.outer.security.report.R;
 import com.shenhua.outer.security.report.adapter.BaseItemDecoration;
@@ -38,6 +42,7 @@ import retrofit2.Response;
  */
 public class WarningListFragment extends Fragment {
 
+
     public static WarningListFragment newInstance() {
         return new WarningListFragment();
     }
@@ -49,10 +54,13 @@ public class WarningListFragment extends Fragment {
     @BindView(R.id.empty)
     TextView mEmptyView;
 
-    private static final int PAGE_SIZE = 50;
+    private static final int PAGE_SIZE = 20;
     private View mRootView;
     private List<WarningList.DataBean.ListBean> mDatas = new ArrayList<>();
     private WarningListAdapter mWarningListAdapter;
+    private boolean isLoadingMore = false;
+    private int currentPage = 0;
+    private WarningList.DataBean mDataBean;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,6 +99,51 @@ public class WarningListFragment extends Fragment {
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         mSwipeRefreshLayout.setOnRefreshListener(this::initData);
         initData();
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                if (lastVisibleItemPosition + 1 == mWarningListAdapter.getItemCount()) {
+                    boolean isRefreshing = mSwipeRefreshLayout.isRefreshing();
+                    if (isRefreshing) {
+                        mWarningListAdapter.notifyItemRemoved(mWarningListAdapter.getItemCount());
+//                        return;
+                    }
+                    if (!isLoadingMore) {
+                        isLoadingMore = true;
+                        new Handler().postDelayed(() -> {
+                            getMoreData();
+                            isLoadingMore = false;
+                        }, 1000);
+                    }
+                }
+            }
+        });
+    }
+
+    private void getMoreData() {
+        if (hasMore()) {
+            RetrofitHelper.get().getRetrofit().create(IService.class)
+                    .getWarningList(UserUtils.get().getUserId(getContext()), currentPage + 1, PAGE_SIZE)
+                    .enqueue(new Callback<WarningList>() {
+                        @Override
+                        public void onResponse(Call<WarningList> call, Response<WarningList> response) {
+                            mDataBean = response.body().getData();
+                            mDatas.addAll(mDataBean.getList());
+                            mWarningListAdapter.addMoreItem(mDataBean.getList());
+                            Log.d("shenhuaLog -- " + WarningListFragment.class.getSimpleName(), "onResponse: more >> " + mDatas.size());
+                            currentPage = mDataBean.getPageNum();
+                        }
+
+                        @Override
+                        public void onFailure(Call<WarningList> call, Throwable t) {
+                            t.printStackTrace();
+                        }
+                    });
+        } else {
+            Toast.makeText(getContext(), "已无更多数据", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initData() {
@@ -104,21 +157,31 @@ public class WarningListFragment extends Fragment {
                     @Override
                     public void onResponse(Call<WarningList> call, Response<WarningList> response) {
                         mSwipeRefreshLayout.setRefreshing(false);
-                        mDatas = response.body().getData().getList();
+                        mDataBean = null;
+                        mDataBean = response.body().getData();
+                        mDatas.clear();
+                        mDatas = mDataBean.getList();
+                        Log.d("shenhuaLog -- " + WarningListFragment.class.getSimpleName(), "onResponse: >> " + mDatas.size());
                         if (mDatas.size() == 0) {
                             AndroidUtils.showEmptyNull(mEmptyView);
+                            return;
                         }
                         AndroidUtils.hideEmpty(mEmptyView);
                         mWarningListAdapter.setDatas(mDatas);
-                        mWarningListAdapter.notifyDataSetChanged();
+                        currentPage = mDataBean.getPageNum();
                     }
 
                     @Override
                     public void onFailure(Call<WarningList> call, Throwable t) {
+                        t.printStackTrace();
                         mSwipeRefreshLayout.setRefreshing(false);
                         AndroidUtils.showEmptyError(mEmptyView);
                     }
                 });
+    }
+
+    private boolean hasMore() {
+        return mDataBean != null && mDataBean.getEndRow() < mDataBean.getTotal();
     }
 
     @Override

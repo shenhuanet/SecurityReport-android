@@ -3,10 +3,10 @@ package com.shenhua.outer.security.report.view.frag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -16,12 +16,12 @@ import com.shenhua.outer.security.report.bean.OneDayChart;
 import com.shenhua.outer.security.report.core.BusProvider;
 import com.shenhua.outer.security.report.core.IService;
 import com.shenhua.outer.security.report.core.RetrofitHelper;
-import com.shenhua.outer.security.report.core.utils.AndroidUtils;
 import com.shenhua.outer.security.report.core.utils.UserUtils;
 import com.shenhua.outer.security.report.view.widget.LineChartWrapper;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -91,23 +91,17 @@ public class HomeOverViewFragment extends Fragment {
                 .enqueue(new Callback<OneDayChart>() {
                     @Override
                     public void onResponse(Call<OneDayChart> call, Response<OneDayChart> response) {
-                        ArrayList<String> list = AndroidUtils.ConvertObjToList(response.body().getData());
-                        if (list == null || list.size() != 24) {
-                            Toast.makeText(getContext(), "实时数据预览数据格式有误", Toast.LENGTH_SHORT).show();
-                            return;
+                        List<Integer> data = response.body().getData();
+                        if (data != null && data.size() > 0) {
+                            mDatas.clear();
+                            Collections.sort(data);
+                            mDatas.addAll(data);
+                            mLineChartWrapper.refresh(mDatas);
                         }
-                        mDatas.clear();
-                        int index = list.size() - 1;
-                        for (int i = index; i >= 0; i--) {
-                            // 反向添加
-                            mDatas.add(Math.abs(i - index), Integer.parseInt(list.get(i)));
-                        }
-                        mLineChartWrapper.refresh(mDatas);
                     }
 
                     @Override
                     public void onFailure(Call<OneDayChart> call, Throwable t) {
-
                     }
                 });
     }

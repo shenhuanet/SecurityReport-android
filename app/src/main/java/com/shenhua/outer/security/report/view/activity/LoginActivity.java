@@ -69,7 +69,7 @@ public class LoginActivity extends BaseActivity {
         }
         String clientId = getSharedPreferences("push", Context.MODE_PRIVATE).getString("clientId", "");
         if (TextUtils.isEmpty(clientId)) {
-            Toast.makeText(this, "ClientId未知  请重启应用", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "ClientId 正在获取中，请重试", Toast.LENGTH_SHORT).show();
             return;
         }
         ProgressDialog dialog = new ProgressDialog(this);
@@ -84,11 +84,11 @@ public class LoginActivity extends BaseActivity {
                     Toast.makeText(LoginActivity.this, "登录失败:服务器异常", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                 if (response.body().getData() == null) {
                     Toast.makeText(LoginActivity.this, "用户数据异常", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                 UserUtils.get().saveUser(LoginActivity.this, response.body().getData());
                 navToMainActivity();
             }

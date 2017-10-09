@@ -136,12 +136,11 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-//                mCurrentPage = position;
                 currentCalendars = calendarAdapter.getPagers();
                 if (currentCalendars.get(position % currentCalendars.size()) != null) {
                     currentDate = currentCalendars.get(position % currentCalendars.size()).getSeedDate();
-                    onDateChanged(currentDate, false);
                     Log.d("shenhuaLog -- " + HomeFragment.class.getSimpleName(), "页面滑动: >> " + currentDate);
+                    mToolbarTitleTv.setText(Utils.sMonth[currentDate.getMonth() - 1]);
                 }
             }
 

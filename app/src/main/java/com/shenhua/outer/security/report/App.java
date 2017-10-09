@@ -13,6 +13,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        CrashReport.initCrashReport(this,"6842d8b3bd",true);
+        CrashReport.initCrashReport(this, "6842d8b3bd", false);
     }
 }
