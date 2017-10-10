@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
@@ -85,15 +86,18 @@ public class WaringResolveActivity extends BaseActivity {
                 .resolveWarning(mWarningId, mResolveEt.getText().toString()).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
+                Log.d("shenhuaLog -- " + WaringResolveActivity.class.getSimpleName(), "onResponse: >>> " + response.raw().toString());
                 dialog.dismiss();
                 try {
                     JSONObject obj = new JSONObject(response.body());
-                    Toast.makeText(WaringResolveActivity.this, obj.getString("message"), Toast.LENGTH_SHORT).show();
-                    mResolveEt.setText("");
-                    mResolveBtn.setEnabled(false);
+                    Toast.makeText(WaringResolveActivity.this, obj.getString("msg"), Toast.LENGTH_SHORT).show();
+                    if (obj.getBoolean("success")) {
+                        mResolveEt.setText("");
+                        mResolveBtn.setEnabled(false);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(WaringResolveActivity.this, "数据异常", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WaringResolveActivity.this, "处理失败", Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -15,8 +15,6 @@ import com.shenhua.outer.security.report.core.BusProvider;
 import com.shenhua.outer.security.report.view.widget.NiceProgressBar;
 import com.squareup.otto.Subscribe;
 
-import java.util.Random;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -63,24 +61,24 @@ public class HomeAlarmMonitorFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initViews(80, 50, 20);
+//        initViews(80, 50, 20);
     }
 
     private void initViews(int all, int unusual, int online) {
         mCountProgress.setWheelColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-        mCountProgress.setStart(-new Random().nextInt(90));
+        mCountProgress.setStart(-90);
         mCountProgress.setTextMax(all);
         mCountProgress.show();
         mAllDectetTv.setText(String.valueOf(all));
 
         mWarningProgress.setWheelColor(ContextCompat.getColor(getContext(), R.color.colorRed4));
-        mWarningProgress.setStart(-new Random().nextInt(90));
+        mWarningProgress.setStart(-90);
         mWarningProgress.setTextMax(unusual);
         mWarningProgress.show();
         mUnusualDectetTv.setText(String.valueOf(unusual));
 
         mOnlineProgress.setWheelColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        mOnlineProgress.setStart(-new Random().nextInt(90));
+        mOnlineProgress.setStart(-90);
         mOnlineProgress.setTextMax(online);
         mOnlineProgress.show();
         mOnlineDectetTv.setText(String.valueOf(online));

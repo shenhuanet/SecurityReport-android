@@ -31,210 +31,44 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <android.support.v7.widget.LinearLayoutCompat
-            android:id="@+id/layoutDetailParent"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:divider="@drawable/shape_divider_gray"
-            app:showDividers="middle">
+            android:layout_height="match_parent">
 
-            <RelativeLayout style="@style/ItemLayoutStyle.White">
+            <android.support.v7.widget.LinearLayoutCompat
+                android:id="@+id/layoutDetailParent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:divider="@drawable/shape_divider_gray"
+                app:showDividers="middle">
 
-                <TextView
-                    style="@style/TextStyle"
-                    android:layout_marginStart="16dp"
-                    android:text="监测点名称" />
+                <RelativeLayout style="@style/ItemLayoutStyle.White">
 
-                <TextView
-                    android:id="@+id/tvMonitorName"
-                    style="@style/TextStyle.Gray"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="16dp"
-                    android:text="null" />
+                    <TextView
+                        style="@style/TextStyle"
+                        android:layout_marginStart="16dp"
+                        android:text="监测点名称" />
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tvMonitorName"
+                        style="@style/TextStyle.Gray"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="16dp" />
 
-            <!--网关及编号暂不显示-->
-            <RelativeLayout
-                style="@style/ItemLayoutStyle.White"
-                android:visibility="gone">
+                </RelativeLayout>
 
-                <TextView
-                    style="@style/TextStyle"
-                    android:layout_marginStart="16dp"
-                    android:text="所属网关" />
+            </android.support.v7.widget.LinearLayoutCompat>
 
-                <TextView
-                    style="@style/TextStyle.Gray"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="16dp"
-                    android:text="网关1" />
+        </android.support.v4.widget.NestedScrollView>
 
-            </RelativeLayout>
-
-            <RelativeLayout
-                style="@style/ItemLayoutStyle.White"
-                android:visibility="gone">
-
-                <TextView
-                    style="@style/TextStyle"
-                    android:layout_marginStart="16dp"
-                    android:text="网关编号" />
-
-                <TextView
-                    style="@style/TextStyle.Gray"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="16dp"
-                    android:text="257" />
-
-            </RelativeLayout>
-
-            <!--检测项类型-->
-            <!--<RelativeLayout-->
-            <!--android:id="@+id/type1"-->
-            <!--style="@style/ItemLayoutStyle.White">-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle"-->
-            <!--android:layout_marginStart="16dp"-->
-            <!--android:text="故障电弧" />-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle.Gray"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--android:text="实验楼5号" />-->
-
-            <!--</RelativeLayout>-->
-
-            <!--<RelativeLayout-->
-            <!--android:id="@+id/type2"-->
-            <!--style="@style/ItemLayoutStyle.White">-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle"-->
-            <!--android:layout_marginStart="16dp"-->
-            <!--android:text="温度" />-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle.Gray"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--android:text="报警" />-->
-
-            <!--</RelativeLayout>-->
-
-            <!--<RelativeLayout-->
-            <!--android:id="@+id/type3"-->
-            <!--style="@style/ItemLayoutStyle.White">-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle"-->
-            <!--android:layout_marginStart="16dp"-->
-            <!--android:text="剩余电流" />-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle.Gray"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--android:text="报警" />-->
-
-            <!--</RelativeLayout>-->
-
-            <!--<RelativeLayout-->
-            <!--android:id="@+id/type6"-->
-            <!--style="@style/ItemLayoutStyle.White">-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle"-->
-            <!--android:layout_marginStart="16dp"-->
-            <!--android:text="电流" />-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle.Gray"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--android:text="隐患" />-->
-
-            <!--</RelativeLayout>-->
-
-            <!--<RelativeLayout-->
-            <!--android:id="@+id/type7"-->
-            <!--style="@style/ItemLayoutStyle.White">-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle"-->
-            <!--android:layout_marginStart="16dp"-->
-            <!--android:text="电压" />-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle.Gray"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--android:text="正常" />-->
-
-            <!--</RelativeLayout>-->
-
-            <!--<RelativeLayout-->
-            <!--android:id="@+id/type8"-->
-            <!--style="@style/ItemLayoutStyle.White">-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle"-->
-            <!--android:layout_marginStart="16dp"-->
-            <!--android:text="消防水压" />-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle.Gray"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--android:text="正常" />-->
-
-            <!--</RelativeLayout>-->
-
-            <!--<RelativeLayout-->
-            <!--android:id="@+id/type9"-->
-            <!--style="@style/ItemLayoutStyle.White">-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle"-->
-            <!--android:layout_marginStart="16dp"-->
-            <!--android:text="防火门" />-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle.Gray"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--android:text="正常" />-->
-
-            <!--</RelativeLayout>-->
-
-            <!--<RelativeLayout-->
-            <!--android:id="@+id/type10"-->
-            <!--style="@style/ItemLayoutStyle.White">-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle"-->
-            <!--android:layout_marginStart="16dp"-->
-            <!--android:text="火灾报警器" />-->
-
-            <!--<TextView-->
-            <!--style="@style/TextStyle.Gray"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--android:text="正常" />-->
-
-            <!--</RelativeLayout>-->
-
-        </android.support.v7.widget.LinearLayoutCompat>
-
-    </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

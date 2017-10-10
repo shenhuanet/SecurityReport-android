@@ -42,7 +42,6 @@ import retrofit2.Response;
  */
 public class WarningListFragment extends Fragment {
 
-
     public static WarningListFragment newInstance() {
         return new WarningListFragment();
     }
@@ -132,7 +131,6 @@ public class WarningListFragment extends Fragment {
                             mDataBean = response.body().getData();
                             mDatas.addAll(mDataBean.getList());
                             mWarningListAdapter.addMoreItem(mDataBean.getList());
-                            Log.d("shenhuaLog -- " + WarningListFragment.class.getSimpleName(), "onResponse: more >> " + mDatas.size());
                             currentPage = mDataBean.getPageNum();
                         }
 

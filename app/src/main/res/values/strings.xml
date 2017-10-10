@@ -51,6 +51,19 @@
         <item>火灾报警器</item>
     </string-array>
 
+    <string-array name="monitor_type_unit">
+        <item> </item>
+        <item>℃</item>
+        <item>mA</item>
+        <item> </item>
+        <item> </item>
+        <item>mA</item>
+        <item>V</item>
+        <item>MPa</item>
+        <item> </item>
+        <item> </item>
+    </string-array>
+
     <string-array name="power_type">
         <item>A相电压</item>
         <item>B相电压</item>

@@ -1,10 +1,15 @@
 package com.shenhua.outer.security.report.view.activity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
@@ -35,6 +40,8 @@ public class DetailActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.layoutDetailParent)
     LinearLayoutCompat mDetailParentLayout;
     @BindView(R.id.tvMonitorName)
@@ -44,8 +51,8 @@ public class DetailActivity extends BaseActivity {
     @BindView(R.id.btnFuwei)
     Button mFuweiBtn;
 
-    private ProgressDialog mProgressDialog;
     private int mMonitoringId;// 操作的sersorId
+    private AlertDialog mProgressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,19 +64,27 @@ public class DetailActivity extends BaseActivity {
 
         mMonitoringId = getIntent().getIntExtra("mMonitoringId", -1);
         if (mMonitoringId != -1) {
-            getDatial(mMonitoringId);
+            mSwipeRefreshLayout.setRefreshing(true);
+            new Handler().postDelayed(() -> {
+                mSwipeRefreshLayout.setRefreshing(false);
+                getDatial(mMonitoringId);
+            }, 1000);
         } else {
             mMonitorNameTv.setText("监测点id为空");
         }
+
+        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary));
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mSwipeRefreshLayout.setRefreshing(true);
+            new Handler().postDelayed(() -> {
+                mSwipeRefreshLayout.setRefreshing(false);
+                getDatial(mMonitoringId);
+            }, 1000);
+        });
     }
 
     private void getDatial(int monitoringId) {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage("数据获取中");
-        }
         btnEnable(false);
-        mProgressDialog.show();
         Call<MonitorInfo> call = RetrofitHelper.get().getRetrofit().create(IService.class).getMonitoringInfo(monitoringId);
         call.enqueue(new Callback<MonitorInfo>() {
             @Override
@@ -78,28 +93,15 @@ public class DetailActivity extends BaseActivity {
                     mMonitorNameTv.setText(response.body().getData().getMonitoring().getName());
                     List<MonitorInfo.DataBean.SensorsBean> sensors = response.body().getData().getSensors();
                     if (sensors.size() > 0) {
-                        MonitorInfo.DataBean.SensorsBean sensorsBean;
-                        String[] typeKey = getResources().getStringArray(R.array.monitor_type);
-                        MonitorTypeLayout layout;
-                        for (int i = 0; i < sensors.size(); i++) {
-                            sensorsBean = sensors.get(i);
-                            // SensorType 附件3
-                            // warningTotal 附件2
-                            layout = new MonitorTypeLayout(DetailActivity.this,
-                                    typeKey[sensorsBean.getSensorType() - 1],
-                                    sensorsBean.getWarningTotal(),
-                                    sensorsBean.getReadValue());
-                            mDetailParentLayout.addView(layout);
-                        }
+                        clearViews();
+                        addViews(sensors);
                     }
-                    mProgressDialog.dismiss();
                     btnEnable(true);
                 }
             }
 
             @Override
             public void onFailure(Call<MonitorInfo> call, Throwable t) {
-                mProgressDialog.dismiss();
                 btnEnable(false);
             }
         });
@@ -115,6 +117,9 @@ public class DetailActivity extends BaseActivity {
 
     @OnClick(R.id.btnXiaoyin)
     void noiseReduction() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+        }
         mProgressDialog.setMessage("操作中");
         btnEnable(false);
         mProgressDialog.show();
@@ -148,6 +153,9 @@ public class DetailActivity extends BaseActivity {
 
     @OnClick(R.id.btnFuwei)
     void reset() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+        }
         mProgressDialog.setMessage("操作中");
         btnEnable(false);
         mProgressDialog.show();
@@ -155,6 +163,7 @@ public class DetailActivity extends BaseActivity {
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
+                Log.d("shenhuaLog -- " + DetailActivity.class.getSimpleName(), "onResponse: 复位 >>>> " + call.request().toString());
                 mProgressDialog.dismiss();
                 try {
                     JSONObject obj = new JSONObject(response.body());
@@ -182,5 +191,26 @@ public class DetailActivity extends BaseActivity {
     private void btnEnable(boolean b) {
         mXiaoyinBtn.setEnabled(b);
         mFuweiBtn.setEnabled(b);
+    }
+
+    private void clearViews() {
+        int count = mDetailParentLayout.getChildCount();
+        // 移除除第一个view的其它view
+        mDetailParentLayout.removeViews(1, count - 1);
+    }
+
+    private void addViews(List<MonitorInfo.DataBean.SensorsBean> sensors) {
+        MonitorInfo.DataBean.SensorsBean sensorsBean;
+        MonitorTypeLayout layout;
+        for (int i = 0; i < sensors.size(); i++) {
+            sensorsBean = sensors.get(i);
+            // SensorType 附件3
+            // warningTotal 附件2
+            layout = new MonitorTypeLayout(DetailActivity.this,
+                    sensorsBean.getSensorType(),
+                    sensorsBean.getWarningTotal(),
+                    sensorsBean.getReadValue());
+            mDetailParentLayout.addView(layout);
+        }
     }
 }

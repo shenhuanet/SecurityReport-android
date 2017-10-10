@@ -7,13 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -55,8 +53,6 @@ public class HomeFragment extends Fragment {
         return new HomeFragment();
     }
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.ivWarning)
@@ -65,10 +61,8 @@ public class HomeFragment extends Fragment {
     TextView mWraningCountTv;
     @BindView(R.id.tvToolbarTitle)
     TextView mToolbarTitleTv;
-    @BindView(R.id.frameOverview)
-    FrameLayout mOverviewFrame;
-    @BindView(R.id.frameMonitor)
-    FrameLayout mMonitorFrame;
+    @BindView(R.id.tvToolbarTitleYear)
+    TextView mToolbarTitleTvYear;
     @BindView(R.id.calendarView)
     MonthPager mMonthPager;
 
@@ -109,6 +103,7 @@ public class HomeFragment extends Fragment {
 
     private void initCalendar() {
         currentDate = new CalendarDate();
+        refreshTitle();
         CustomDayView customDayView = new CustomDayView(getContext(), R.layout.view_custom_day);
         calendarAdapter = new CalendarViewAdapter(getContext(), customDayView, new OnSelectDateListener() {
             @Override
@@ -140,7 +135,7 @@ public class HomeFragment extends Fragment {
                 if (currentCalendars.get(position % currentCalendars.size()) != null) {
                     currentDate = currentCalendars.get(position % currentCalendars.size()).getSeedDate();
                     Log.d("shenhuaLog -- " + HomeFragment.class.getSimpleName(), "页面滑动: >> " + currentDate);
-                    mToolbarTitleTv.setText(Utils.sMonth[currentDate.getMonth() - 1]);
+                    refreshTitle();
                 }
             }
 
@@ -149,11 +144,19 @@ public class HomeFragment extends Fragment {
             }
         });
         // 首次刷新时用于正确显示当日
-        ViewTreeObserver viewTreeObserver = mRootView.getViewTreeObserver();
-        viewTreeObserver.addOnWindowFocusChangeListener(hasFocus -> {
-            CalendarDate today = new CalendarDate();
-            calendarAdapter.notifyDataChanged(today);
+        mRootView.getViewTreeObserver().addOnWindowFocusChangeListener(new ViewTreeObserver.OnWindowFocusChangeListener() {
+            @Override
+            public void onWindowFocusChanged(boolean hasFocus) {
+                CalendarDate today = new CalendarDate();
+                calendarAdapter.notifyDataChanged(today);
+                mRootView.getViewTreeObserver().removeOnWindowFocusChangeListener(this);
+            }
         });
+    }
+
+    private void refreshTitle() {
+        mToolbarTitleTvYear.setText(String.valueOf(currentDate.getYear()));
+        mToolbarTitleTv.setText(Utils.sMonth[currentDate.getMonth() - 1]);
     }
 
     /**
@@ -174,7 +177,9 @@ public class HomeFragment extends Fragment {
     @OnClick({R.id.tvPre, R.id.tvNext})
     void changePage(View view) {
         if (view.getId() == R.id.tvPre) {
-            mMonthPager.setCurrentItem(mMonthPager.getCurrentPosition() + -1);
+//            mMonthPager.setCurrentItem(mMonthPager.getCurrentPosition() + -1);
+            CalendarDate today = new CalendarDate(2017, 9, 1);
+            calendarAdapter.notifyDataChanged(today);
         } else {
             mMonthPager.setCurrentItem(mMonthPager.getCurrentPosition() + 1);
         }

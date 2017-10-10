@@ -28,6 +28,7 @@ public class LineChartWrapper {
 
     private Context mContext;
     private LineChart mLineChart;
+    private static final int LEABLE_STEP = 5;
 
     public LineChartWrapper(Context context, LineChart lineChart) {
         mContext = context;
@@ -48,6 +49,9 @@ public class LineChartWrapper {
         }
         LineDataSet lineDataSet = setupDataSet(entries);
         LineData lineData = setupLineData(lineDataSet);
+        // 去除小数
+        int max = (int) lineData.getYMax();
+        mLineChart.getAxisLeft().setAxisMaximum(getMax(max));
         mLineChart.setData(lineData);
     }
 
@@ -123,7 +127,8 @@ public class LineChartWrapper {
 
     private void setupYAxis(YAxis yAxis) {
         yAxis.setAxisMinimum(0f);
-        yAxis.setLabelCount(5);
+        yAxis.setAxisMaximum(LEABLE_STEP * 2);
+        yAxis.setLabelCount(LEABLE_STEP);
         yAxis.setDrawZeroLine(false);
         setupAxis(yAxis);
     }
@@ -135,5 +140,14 @@ public class LineChartWrapper {
         base.setDrawLabels(true);
     }
 
+    private int getMax(int a) {
+        if (a < LEABLE_STEP) {
+            return LEABLE_STEP;
+        } else if (a % LEABLE_STEP == 0) {
+            return a;
+        } else {
+            return (a / LEABLE_STEP + 1) * LEABLE_STEP;
+        }
+    }
 
 }

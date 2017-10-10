@@ -142,22 +142,6 @@ public class NiceProgressBar extends View {
         canvas.drawArc(mColorWheelRectangle, -90, 360, false, mDefaultWheelPaint);
         mColorWheelPaint.setStrokeCap(Paint.Cap.ROUND);
         canvas.drawArc(mColorWheelRectangle, start, mSweepAnglePer, false, mColorWheelPaint);
-//        int deleteWidth = 20;
-//        mColorWheelPaint.setStrokeCap(Paint.Cap.ROUND);
-//        mArcRect.set(bounds.left + deleteWidth / 2, bounds.top + deleteWidth / 2,
-//                bounds.right - deleteWidth / 2, bounds.bottom - deleteWidth / 2);
-//        canvas.drawArc(mArcRect, 0, 360 * 60 / 100, false, mColorWheelPaint);
-//        String textStr = mCount + "";
-//        if (mIsShowWithPercent) {
-//            textStr = textStr + "%";
-//        }
-//        textPaint.getTextBounds(textStr, 0, textStr.length(), bounds);
-//        canvas.drawText(
-//                textStr,
-//                (mColorWheelRectangle.centerX())
-//                        - (textPaint.measureText(textStr) / 2),
-//                mColorWheelRectangle.centerY() + bounds.height() / 2,
-//                textPaint);
     }
 
     @Override

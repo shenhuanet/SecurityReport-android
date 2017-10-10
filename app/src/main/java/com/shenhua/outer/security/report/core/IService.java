@@ -34,8 +34,8 @@ public interface IService {
      * @param msg       处理意见
      * @return String
      */
-    @POST("app/doHandle")
-    Call<String> resolveWarning(@Query("id") int warningId, @Query("remark") String msg);
+    @POST("app/warning/doHandle")
+    Call<String> resolveWarning(@Query("id") int warningId, @Query("remarks") String msg);
 
     /**
      * 获取所有报警列表
@@ -78,7 +78,7 @@ public interface IService {
      * @return UserStations
      */
     @POST("app/sensor/noiseReduction")
-    Call<String> noiseReduction(@Query("monitoringId") int sersorId);
+    Call<String> noiseReduction(@Query("id") int sersorId);
 
     /**
      * 复位
@@ -87,7 +87,7 @@ public interface IService {
      * @return UserStations
      */
     @POST("app/sensor/reset")
-    Call<String> reset(@Query("monitoringId") int sersorId);
+    Call<String> reset(@Query("id") int sersorId);
 
     /**
      * 获取监测点详情

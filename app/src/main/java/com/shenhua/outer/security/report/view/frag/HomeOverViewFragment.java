@@ -3,7 +3,6 @@ package com.shenhua.outer.security.report.view.frag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import com.shenhua.outer.security.report.view.widget.LineChartWrapper;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -41,7 +39,6 @@ public class HomeOverViewFragment extends Fragment {
     LineChart mLineChart;
     private ArrayList<Integer> mDatas = new ArrayList<>();
     private LineChartWrapper mLineChartWrapper;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +69,6 @@ public class HomeOverViewFragment extends Fragment {
         for (int i = 0; i < mDatas.size(); i++) {
             entries.add(new Entry(i, mDatas.get(i)));
         }
-//        Collections.sort(entries, new EntryXComparator());
         if (mLineChartWrapper == null) {
             mLineChartWrapper = new LineChartWrapper(getContext(), mLineChart);
             mLineChartWrapper.create(entries);
@@ -94,7 +90,6 @@ public class HomeOverViewFragment extends Fragment {
                         List<Integer> data = response.body().getData();
                         if (data != null && data.size() > 0) {
                             mDatas.clear();
-                            Collections.sort(data);
                             mDatas.addAll(data);
                             mLineChartWrapper.refresh(mDatas);
                         }

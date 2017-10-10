@@ -4,10 +4,18 @@
     style="@style/ItemLayoutStyle.White"
     android:layout_height="60dp">
 
+    <ImageView
+        android:id="@+id/ivStationState"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/ic_status_selector" />
+
     <TextView
         android:id="@+id/tvKey"
         style="@style/TextStyle"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="3dp"
+        android:layout_toEndOf="@+id/ivStationState"
         tools:text="故障电弧" />
 
     <TextView
