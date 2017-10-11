@@ -87,11 +87,13 @@ public class HomeOverViewFragment extends Fragment {
                 .enqueue(new Callback<OneDayChart>() {
                     @Override
                     public void onResponse(Call<OneDayChart> call, Response<OneDayChart> response) {
-                        List<Integer> data = response.body().getData();
-                        if (data != null && data.size() > 0) {
-                            mDatas.clear();
-                            mDatas.addAll(data);
-                            mLineChartWrapper.refresh(mDatas);
+                        if (response.body() != null) {
+                            List<Integer> data = response.body().getData();
+                            if (data != null && data.size() > 0) {
+                                mDatas.clear();
+                                mDatas.addAll(data);
+                                mLineChartWrapper.refresh(mDatas);
+                            }
                         }
                     }
 

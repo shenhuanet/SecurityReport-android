@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,7 +133,6 @@ public class HomeFragment extends Fragment {
                 currentCalendars = calendarAdapter.getPagers();
                 if (currentCalendars.get(position % currentCalendars.size()) != null) {
                     currentDate = currentCalendars.get(position % currentCalendars.size()).getSeedDate();
-                    Log.d("shenhuaLog -- " + HomeFragment.class.getSimpleName(), "页面滑动: >> " + currentDate);
                     refreshTitle();
                 }
             }
@@ -177,12 +175,12 @@ public class HomeFragment extends Fragment {
     @OnClick({R.id.tvPre, R.id.tvNext})
     void changePage(View view) {
         if (view.getId() == R.id.tvPre) {
-//            mMonthPager.setCurrentItem(mMonthPager.getCurrentPosition() + -1);
-            CalendarDate today = new CalendarDate(2017, 9, 1);
-            calendarAdapter.notifyDataChanged(today);
+            currentDate = currentDate.modifyMonth(currentDate, -1);
         } else {
-            mMonthPager.setCurrentItem(mMonthPager.getCurrentPosition() + 1);
+            currentDate = currentDate.modifyMonth(currentDate, 1);
         }
+        calendarAdapter.notifyDataChanged(currentDate);
+        refreshTitle();
     }
 
     @Override
@@ -190,9 +188,9 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         if (!isInit) {
             mSwipeRefreshLayout.setRefreshing(true);
-            new Handler().postDelayed(this::refresh, 1500);
+            new Handler().postDelayed(this::onRefresh, 1500);
             mSwipeRefreshLayout.setOnRefreshListener(() -> {
-                new Handler().postDelayed(this::refresh, 1500);
+                new Handler().postDelayed(this::onRefresh, 1500);
             });
             isInit = true;
         }
@@ -246,7 +244,7 @@ public class HomeFragment extends Fragment {
         super.onDestroy();
     }
 
-    private void refresh() {
+    private void onRefresh() {
         mSwipeRefreshLayout.setRefreshing(false);
         getWarningCount();
         BusProvider.get().post(new EventDate(AndroidUtils.formatData(currentDate)));

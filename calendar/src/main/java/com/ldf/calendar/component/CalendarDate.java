@@ -72,6 +72,33 @@ public class CalendarDate implements Serializable {
         return result;
     }
 
+    public CalendarDate modifyMonth(CalendarDate cud, int offset) {
+        CalendarDate result = new CalendarDate(cud.getYear(), cud.getMonth(), 1);
+        int addToMonth = this.month + offset;
+        if (offset > 0) {
+            if (addToMonth > 12) {
+                result.setYear(this.year + (addToMonth - 1) / 12);
+                result.setMonth(addToMonth % 12 == 0 ? 12 : addToMonth % 12);
+            } else {
+                result.setYear(this.year);
+                result.setMonth(addToMonth);
+            }
+        } else {
+            if (addToMonth == 0) {
+                result.setYear(this.year - 1);
+                result.setMonth(12);
+            } else if (addToMonth < 0) {
+                result.setYear(this.year + addToMonth / 12 - 1);
+                int month = 12 - Math.abs(addToMonth) % 12;
+                result.setMonth(month == 0 ? 12 : month);
+            } else {
+                result.setYear(this.year);
+                result.setMonth(addToMonth);
+            }
+        }
+        return result;
+    }
+
     /**
      * 通过修改当前Date对象的所在月返回一个修改后的Date
      *
