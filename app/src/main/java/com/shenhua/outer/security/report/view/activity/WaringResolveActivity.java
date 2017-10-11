@@ -9,9 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shenhua.outer.security.report.R;
@@ -41,6 +42,8 @@ public class WaringResolveActivity extends BaseActivity {
     TextInputEditText mResolveEt;
     @BindView(R.id.btnResolve)
     Button mResolveBtn;
+    @BindView(R.id.tvResolved)
+    TextView mResolvedTv;
     private int mWarningId = -1;
 
     @Override
@@ -86,14 +89,14 @@ public class WaringResolveActivity extends BaseActivity {
                 .resolveWarning(mWarningId, mResolveEt.getText().toString()).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                Log.d("shenhuaLog -- " + WaringResolveActivity.class.getSimpleName(), "onResponse: >>> " + response.raw().toString());
                 dialog.dismiss();
                 try {
                     JSONObject obj = new JSONObject(response.body());
                     Toast.makeText(WaringResolveActivity.this, obj.getString("msg"), Toast.LENGTH_SHORT).show();
                     if (obj.getBoolean("success")) {
                         mResolveEt.setText("");
-                        mResolveBtn.setEnabled(false);
+                        mResolvedTv.setText("告警已处理");
+                        mResolveBtn.setVisibility(View.INVISIBLE);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

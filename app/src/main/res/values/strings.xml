@@ -64,13 +64,13 @@
         <item> </item>
     </string-array>
 
-    <string-array name="power_type">
-        <item>A相电压</item>
-        <item>B相电压</item>
-        <item>C相电压</item>
-        <item>AB相电压</item>
-        <item>BC相电压</item>
-        <item>CA相电压</item>
+    <string-array name="voltage_type">
+        <item>A相</item>
+        <item>B相</item>
+        <item>C相</item>
+        <item>AB相</item>
+        <item>BC相</item>
+        <item>CA相</item>
     </string-array>
 
 </resources>

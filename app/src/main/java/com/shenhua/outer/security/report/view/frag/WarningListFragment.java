@@ -159,7 +159,6 @@ public class WarningListFragment extends Fragment {
                         mDataBean = response.body().getData();
                         mDatas.clear();
                         mDatas = mDataBean.getList();
-                        Log.d("shenhuaLog -- " + WarningListFragment.class.getSimpleName(), "onResponse: >> " + mDatas.size());
                         if (mDatas.size() == 0) {
                             AndroidUtils.showEmptyNull(mEmptyView);
                             return;

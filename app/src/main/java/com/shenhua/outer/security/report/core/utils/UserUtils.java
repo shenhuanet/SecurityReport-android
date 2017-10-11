@@ -53,6 +53,9 @@ public class UserUtils {
     }
 
     public synchronized int getUserId(Context context) {
+        if (context == null) {
+            return -1;
+        }
         return context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE).getInt("id", -1);
     }
 

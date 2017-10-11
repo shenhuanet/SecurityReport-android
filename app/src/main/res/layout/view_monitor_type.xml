@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ItemLayoutStyle.White"
-    android:layout_height="60dp">
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@android:color/white"
+    android:minHeight="50dp">
 
     <ImageView
         android:id="@+id/ivStationState"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
         android:src="@drawable/ic_status_selector" />
 
     <TextView
         android:id="@+id/tvKey"
         style="@style/TextStyle"
+        android:layout_centerVertical="true"
         android:layout_marginStart="3dp"
         android:layout_toEndOf="@+id/ivStationState"
         tools:text="故障电弧" />
@@ -22,8 +26,13 @@
         android:id="@+id/tvValue"
         style="@style/TextStyle.Gray"
         android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
         android:layout_marginEnd="16dp"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/tvKey"
+        android:gravity="end"
+        android:maxLines="2"
         android:padding="3dp"
-        tools:text="实验楼5号" />
+        tools:text="123" />
 
 </RelativeLayout>

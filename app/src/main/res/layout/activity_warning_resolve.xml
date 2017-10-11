@@ -100,9 +100,25 @@
                         <TextView
                             style="@style/TextStyle"
                             android:layout_marginStart="16dp"
+                            android:text="报警类型" />
+
+                        <TextView
+                            style="@style/TextStyle.Gray"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="16dp"
+                            android:text="@{data.typeName}" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_marginStart="16dp"
                             android:text="报警情况" />
 
                         <TextView
+                            android:id="@+id/tvResolved"
                             style="@style/TextStyle.Gray"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="16dp"
