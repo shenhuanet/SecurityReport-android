@@ -7,5 +7,3 @@
 /build
 /captures
 .externalNativeBuild
-/apks/
-!/apks/SecurityReport-V1.0.0-beta-release.apk
