@@ -9,7 +9,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -318,7 +317,6 @@ public class MonitorListFragment extends Fragment {
         call.enqueue(new Callback<UserStations>() {
             @Override
             public void onResponse(@Nullable Call<UserStations> call, @Nullable Response<UserStations> response) {
-                Log.d("shenhuaLog -- " + MonitorListFragment.class.getSimpleName(), "站点 :  onResponse: >> " + response.raw().toString());
                 mSwipeRefreshLayout.setRefreshing(false);
                 if (response == null) {
                     AndroidUtils.showEmptyNull(mEmptyView);

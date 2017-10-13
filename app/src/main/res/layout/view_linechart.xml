@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvChartY"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="数量(个)"
+                android:textColor="@color/colorText" />
+
+            <TextView
+                android:id="@+id/tvChartLable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/shape_danger_blue"
+                android:text="存在隐患"
+                android:textColor="@color/colorText"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="20dp"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/shape_realtime_orange"
+                android:text="实时报警量"
+                android:textColor="@color/colorText" />
+
+        </LinearLayout>
+
+        <!--折线图-->
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/linechart"
+            android:layout_width="match_parent"
+            android:layout_height="160dp" />
+
+    </LinearLayout>
+</merge>

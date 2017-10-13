@@ -9,7 +9,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,7 +123,7 @@ public class WarningListFragment extends Fragment {
     private void getMoreData() {
         if (hasMore()) {
             RetrofitHelper.get().getRetrofit().create(IService.class)
-                    .getWarningList(UserUtils.get().getUserId(getContext()), currentPage + 1, PAGE_SIZE)
+                    .getWarningList(UserUtils.get().getUserId(getContext()), currentPage + 1, PAGE_SIZE, 0)
                     .enqueue(new Callback<WarningList>() {
                         @Override
                         public void onResponse(Call<WarningList> call, Response<WarningList> response) {
@@ -150,7 +149,7 @@ public class WarningListFragment extends Fragment {
             AndroidUtils.showEmptyLoading(mEmptyView);
         }
         RetrofitHelper.get().getRetrofit().create(IService.class)
-                .getWarningList(UserUtils.get().getUserId(getContext()), 1, PAGE_SIZE)
+                .getWarningList(UserUtils.get().getUserId(getContext()), 1, PAGE_SIZE, 0)
                 .enqueue(new Callback<WarningList>() {
                     @Override
                     public void onResponse(Call<WarningList> call, Response<WarningList> response) {

@@ -1,5 +1,6 @@
 package com.shenhua.outer.security.report.core;
 
+import com.shenhua.outer.security.report.bean.DetailChartInfo;
 import com.shenhua.outer.security.report.bean.MonitorInfo;
 import com.shenhua.outer.security.report.bean.OneDayChart;
 import com.shenhua.outer.security.report.bean.User;
@@ -55,7 +56,7 @@ public interface IService {
      * @param userId   用户id
      * @param pageNum  页码
      * @param pageSize 页码大小
-     * @param flag     0-获取未处理的 1 获取已处理
+     * @param flag     0-获取未处理的 1-获取已处理, 默认传0
      * @return 所有报警列表
      */
     @POST("app/getWarningList")
@@ -88,6 +89,15 @@ public interface IService {
      */
     @POST("app/sensor/reset")
     Call<String> reset(@Query("id") int sersorId);
+
+    /**
+     * 获取表格详情信息
+     *
+     * @param id sensors id
+     * @return DetailChartInfo
+     */
+    @POST("app/sensorRecord/getOneDay")
+    Call<DetailChartInfo> getMonitoringInfoChart(@Query("id") int id);
 
     /**
      * 获取监测点详情

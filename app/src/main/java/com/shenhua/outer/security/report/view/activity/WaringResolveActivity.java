@@ -97,6 +97,7 @@ public class WaringResolveActivity extends BaseActivity {
                         mResolveEt.setText("");
                         mResolvedTv.setText("告警已处理");
                         mResolveBtn.setVisibility(View.INVISIBLE);
+                        finish();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

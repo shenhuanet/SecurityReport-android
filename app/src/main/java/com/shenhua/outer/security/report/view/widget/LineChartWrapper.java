@@ -35,6 +35,16 @@ public class LineChartWrapper {
         this.mLineChart = lineChart;
     }
 
+    public void reset(){
+        LineData oldData = mLineChart.getLineData();
+        if (oldData != null) {
+            oldData.removeDataSet(0);
+            oldData.notifyDataChanged();
+            mLineChart.notifyDataSetChanged();
+            mLineChart.invalidate();
+        }
+    }
+
     public void refresh(ArrayList<Integer> data) {
         LineData oldData = mLineChart.getLineData();
         if (oldData != null) {
@@ -96,6 +106,41 @@ public class LineChartWrapper {
             mLineChart.setData(lineData);
         }
         return mLineChart;
+    }
+
+    public LineChart createStringXChart(List<Entry> entryList) {
+        if (entryList != null && !entryList.isEmpty()) {
+            mLineChart.setMarker(new LineMarkView(mContext, R.layout.view_custom_marker));
+            mLineChart.setScaleEnabled(false);
+            mLineChart.setDrawBorders(false);
+            mLineChart.setDescription(null);
+            mLineChart.setHighlightPerTapEnabled(true);
+            mLineChart.getAxisRight().setEnabled(false);
+            mLineChart.getLegend().setEnabled(false);
+            setupXAxis1(mLineChart.getXAxis());
+            setupYAxis1(mLineChart.getAxisLeft());
+            mLineChart.animateY(2000);
+            LineDataSet lineDataSet = setupDataSet(entryList);
+            LineData lineData = setupLineData(lineDataSet);
+            mLineChart.setData(lineData);
+        } else {
+            mLineChart.setNoDataText("暂无记录");
+        }
+        return mLineChart;
+    }
+
+    private void setupXAxis1(XAxis xAxis) {
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAvoidFirstLastClipping(true);
+        setupAxis(xAxis);
+    }
+
+    private void setupYAxis1(YAxis yAxis) {
+        yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(1000);
+        yAxis.setLabelCount(5);
+        yAxis.setDrawZeroLine(false);
+        setupAxis(yAxis);
     }
 
     private LineDataSet setupDataSet(List<Entry> entryList) {

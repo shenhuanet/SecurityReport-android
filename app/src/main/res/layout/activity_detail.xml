@@ -21,14 +21,6 @@
             android:minHeight="?attr/actionBarSize"
             android:text="详情" />
 
-        <ProgressBar
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            android:progressTint="@android:color/white"
-            android:visibility="gone" />
-
     </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -41,30 +33,74 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.LinearLayoutCompat
-                android:id="@+id/layoutDetailParent"
+            <LinearLayout
+                android:id="@+id/layoutDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:divider="@drawable/shape_divider_gray"
-                app:showDividers="middle">
+                android:orientation="vertical">
 
-                <RelativeLayout style="@style/ItemLayoutStyle.White">
+                <android.support.v7.widget.LinearLayoutCompat
+                    android:id="@+id/layoutDetailParent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:divider="@drawable/shape_divider_gray"
+                    app:showDividers="middle|end">
+
+                    <RelativeLayout style="@style/ItemLayoutStyle.White">
+
+                        <TextView
+                            style="@style/TextStyle"
+                            android:layout_marginStart="16dp"
+                            android:text="监测点名称" />
+
+                        <TextView
+                            android:id="@+id/tvMonitorName"
+                            style="@style/TextStyle.Gray"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="16dp" />
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.LinearLayoutCompat>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
 
                     <TextView
-                        style="@style/TextStyle"
-                        android:layout_marginStart="16dp"
-                        android:text="监测点名称" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="剩余电流曲线图"
+                        android:textColor="@color/colorText"
+                        android:textSize="18sp" />
+
+                    <include layout="@layout/view_linechart" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tvMonitorName"
-                        style="@style/TextStyle.Gray"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="16dp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="温度曲线图"
+                        android:textColor="@color/colorText"
+                        android:textSize="18sp" />
 
-                </RelativeLayout>
+                    <include layout="@layout/view_linechart" />
 
-            </android.support.v7.widget.LinearLayoutCompat>
+                </LinearLayout>
+
+            </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
 

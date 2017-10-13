@@ -1,7 +1,6 @@
 package com.shenhua.outer.security.report.core.service;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.message.GTCmdMessage;
@@ -23,13 +22,11 @@ public class GetuiIntentService extends GTIntentService {
 
     @Override
     public void onReceiveClientId(Context context, String clientid) {
-        Log.d("shenhuaLog -- " + GetuiIntentService.class.getSimpleName(), "onReceiveClientId: >> " + clientid);
         context.getSharedPreferences("push", Context.MODE_PRIVATE).edit().putString("clientId", clientid).apply();
     }
 
     @Override
     public void onReceiveMessageData(Context context, GTTransmitMessage gtTransmitMessage) {
-        Log.d("shenhuaLog -- " + GetuiIntentService.class.getSimpleName(), "onReceiveMessageData: >> " + gtTransmitMessage.getMessageId());
     }
 
     @Override
