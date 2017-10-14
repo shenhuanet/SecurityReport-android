@@ -17,6 +17,7 @@ import com.shenhua.outer.security.report.core.IService;
 import com.shenhua.outer.security.report.core.RetrofitHelper;
 import com.shenhua.outer.security.report.core.utils.UserUtils;
 import com.shenhua.outer.security.report.view.widget.LineChartWrapper;
+import com.shenhua.outer.security.report.view.widget.OverviewLineMarkView;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -38,7 +39,6 @@ public class HomeOverViewFragment extends Fragment {
     @BindView(R.id.linechart)
     LineChart mLineChart;
     private ArrayList<Integer> mDatas = new ArrayList<>();
-    private LineChartWrapper mLineChartWrapper;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,10 +69,9 @@ public class HomeOverViewFragment extends Fragment {
         for (int i = 0; i < mDatas.size(); i++) {
             entries.add(new Entry(i, mDatas.get(i)));
         }
-        if (mLineChartWrapper == null) {
-            mLineChartWrapper = new LineChartWrapper(getContext(), mLineChart);
-            mLineChartWrapper.create(entries);
-        }
+        new LineChartWrapper(mLineChart).create(entries).setYTop(5)
+                .setXLabelCount(24)
+                .setMarkView(new OverviewLineMarkView(getContext(), mLineChart, R.layout.view_marker_overview));
     }
 
     @Override
@@ -92,7 +91,12 @@ public class HomeOverViewFragment extends Fragment {
                             if (data != null && data.size() > 0) {
                                 mDatas.clear();
                                 mDatas.addAll(data);
-                                mLineChartWrapper.refresh(mDatas);
+                                List<Entry> entries = new ArrayList<>();
+                                for (int i = 0; i < mDatas.size(); i++) {
+                                    entries.add(new Entry(i, mDatas.get(i)));
+                                }
+                                new LineChartWrapper(mLineChart).create(entries).setDefaultYTop()
+                                        .setMarkView(new OverviewLineMarkView(getContext(), mLineChart, R.layout.view_marker_overview));
                             }
                         }
                     }

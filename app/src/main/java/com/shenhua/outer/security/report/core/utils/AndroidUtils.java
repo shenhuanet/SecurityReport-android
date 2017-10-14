@@ -1,8 +1,10 @@
 package com.shenhua.outer.security.report.core.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.ldf.calendar.component.CalendarDate;
@@ -121,5 +123,14 @@ public class AndroidUtils {
 
     public static void hideEmpty(TextView emptyView) {
         emptyView.setVisibility(View.GONE);
+    }
+
+    public static void hideKeyboard(Activity context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive() && context.getCurrentFocus() != null) {
+            if (context.getCurrentFocus().getWindowToken() != null) {
+                imm.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
     }
 }

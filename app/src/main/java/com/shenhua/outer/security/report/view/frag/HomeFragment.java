@@ -231,7 +231,7 @@ public class HomeFragment extends Fragment {
 
     @OnClick(R.id.flWarning)
     void gotoWarning() {
-        startActivity(new Intent(getContext(), WarningActivity.class));
+        startActivityForResult(new Intent(getContext(), WarningActivity.class), 0);
     }
 
     @Override
@@ -248,5 +248,12 @@ public class HomeFragment extends Fragment {
         mSwipeRefreshLayout.setRefreshing(false);
         getWarningCount();
         BusProvider.get().post(new EventDate(AndroidUtils.formatData(currentDate)));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // 报警处置完毕后刷新当前报警数量
+        getWarningCount();
     }
 }

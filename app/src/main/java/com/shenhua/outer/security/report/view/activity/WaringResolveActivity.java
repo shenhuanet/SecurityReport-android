@@ -19,6 +19,7 @@ import com.shenhua.outer.security.report.R;
 import com.shenhua.outer.security.report.bean.WarningList;
 import com.shenhua.outer.security.report.core.IService;
 import com.shenhua.outer.security.report.core.RetrofitHelper;
+import com.shenhua.outer.security.report.core.utils.AndroidUtils;
 import com.shenhua.outer.security.report.databinding.ActivityWarningResolveBinding;
 
 import org.json.JSONObject;
@@ -119,6 +120,11 @@ public class WaringResolveActivity extends BaseActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.layoutResolve)
+    void onClick() {
+        AndroidUtils.hideKeyboard(this);
     }
 
 }

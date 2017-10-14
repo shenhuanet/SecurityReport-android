@@ -96,7 +96,6 @@ public class WarningListFragment extends Fragment {
         mRecyclerView.addItemDecoration(new BaseItemDecoration(getContext()));
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         mSwipeRefreshLayout.setOnRefreshListener(this::initData);
-        initData();
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -139,7 +138,9 @@ public class WarningListFragment extends Fragment {
                         }
                     });
         } else {
-            Toast.makeText(getContext(), "已无更多数据", Toast.LENGTH_SHORT).show();
+            if (mDatas != null && mDatas.size() >= PAGE_SIZE) {
+                Toast.makeText(getContext(), "已无更多数据", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -160,11 +161,11 @@ public class WarningListFragment extends Fragment {
                         mDatas = mDataBean.getList();
                         if (mDatas.size() == 0) {
                             AndroidUtils.showEmptyNull(mEmptyView);
-                            return;
+                        } else {
+                            AndroidUtils.hideEmpty(mEmptyView);
+                            currentPage = mDataBean.getPageNum();
                         }
-                        AndroidUtils.hideEmpty(mEmptyView);
                         mWarningListAdapter.setDatas(mDatas);
-                        currentPage = mDataBean.getPageNum();
                     }
 
                     @Override
@@ -183,6 +184,7 @@ public class WarningListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        initData();
     }
 
     @Override

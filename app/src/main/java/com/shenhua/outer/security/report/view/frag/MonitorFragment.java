@@ -102,7 +102,11 @@ public class MonitorFragment extends Fragment {
                 return;
             }
             mToolbar.setNavigationIcon(R.drawable.ic_back);
-            mTitileTv.setText(TITLES[backStackEntryCount]);
+            try {
+                mTitileTv.setText(TITLES[backStackEntryCount]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 

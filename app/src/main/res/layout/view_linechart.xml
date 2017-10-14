@@ -21,7 +21,7 @@
                 android:textColor="@color/colorText" />
 
             <TextView
-                android:id="@+id/tvChartLable"
+                android:id="@+id/tvChartLable1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="10dp"
@@ -31,6 +31,7 @@
                 android:visibility="gone" />
 
             <TextView
+                android:id="@+id/tvChartLable2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"

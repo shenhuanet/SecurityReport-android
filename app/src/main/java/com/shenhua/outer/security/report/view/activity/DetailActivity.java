@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,9 +24,10 @@ import com.shenhua.outer.security.report.bean.DetailChartInfo;
 import com.shenhua.outer.security.report.bean.MonitorInfo;
 import com.shenhua.outer.security.report.core.IService;
 import com.shenhua.outer.security.report.core.RetrofitHelper;
+import com.shenhua.outer.security.report.view.widget.DetailLineMarkView;
 import com.shenhua.outer.security.report.view.widget.LineChartWrapper;
 import com.shenhua.outer.security.report.view.widget.MonitorTypeLayout;
-import com.shenhua.outer.security.report.view.widget.StringXFormatter;
+import com.shenhua.outer.security.report.view.widget.XValueFormatter;
 
 import org.json.JSONObject;
 
@@ -62,8 +64,6 @@ public class DetailActivity extends BaseActivity {
 
     private int mMonitoringId;// 操作的sersorId
     private AlertDialog mProgressDialog;
-    private LineChartWrapper mElectLineChartWrapper;
-    //    private LineChartWrapper mLineChartWrapper;
     private LinearLayout mElectChartLayout;
     private LinearLayout mTemperChartLayout;
 
@@ -75,10 +75,26 @@ public class DetailActivity extends BaseActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
 
+        initView();
+    }
+
+    private void initView() {
         mElectChartLayout = (LinearLayout) mDetailLayout.getChildAt(1);
         mTemperChartLayout = (LinearLayout) mDetailLayout.getChildAt(2);
-//        mElectChartLayout.setVisibility(View.GONE);
-
+        mElectChartLayout.setVisibility(View.GONE);
+        mTemperChartLayout.setVisibility(View.GONE);
+        ((TextView) mElectChartLayout.findViewById(R.id.tvChartY)).setText("数值(mA)");
+        mElectChartLayout.findViewById(R.id.tvChartLable2).setVisibility(View.GONE);
+        ((TextView) mTemperChartLayout.findViewById(R.id.tvChartY)).setText("温度(℃)");
+        mTemperChartLayout.findViewById(R.id.tvChartLable2).setVisibility(View.GONE);
+        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary));
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mSwipeRefreshLayout.setRefreshing(true);
+            new Handler().postDelayed(() -> {
+                mSwipeRefreshLayout.setRefreshing(false);
+                getDatial(mMonitoringId);
+            }, 1000);
+        });
         mMonitoringId = getIntent().getIntExtra("mMonitoringId", -1);
         if (mMonitoringId != -1) {
             mSwipeRefreshLayout.setRefreshing(true);
@@ -89,17 +105,6 @@ public class DetailActivity extends BaseActivity {
         } else {
             mMonitorNameTv.setText("监测点id为空");
         }
-
-        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary));
-        mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            mSwipeRefreshLayout.setRefreshing(true);
-            new Handler().postDelayed(() -> {
-                mSwipeRefreshLayout.setRefreshing(false);
-                getDatial(mMonitoringId);
-            }, 1000);
-        });
-
-//        initLinechart();
     }
 
     private void getDatial(int monitoringId) {
@@ -127,21 +132,44 @@ public class DetailActivity extends BaseActivity {
         });
     }
 
+    private void getchartInfo(int id, Callback<DetailChartInfo> callback) {
+        Call<DetailChartInfo> call = RetrofitHelper.get().getRetrofit().create(IService.class).getMonitoringInfoChart(id);
+        call.enqueue(callback);
+    }
+
     private void getchartInfo(List<MonitorInfo.DataBean.SensorsBean> sensors) {
         for (MonitorInfo.DataBean.SensorsBean sensor : sensors) {
             if (sensor.getSensorType() == 2) {// 温度
-
-            } else if (sensor.getSensorType() == 3) {// 剩余电流
-                Call<DetailChartInfo> call = RetrofitHelper.get().getRetrofit().create(IService.class).getMonitoringInfoChart(sensor.getId());
-                call.enqueue(new Callback<DetailChartInfo>() {
+                getchartInfo(sensor.getId(), new Callback<DetailChartInfo>() {
                     @Override
                     public void onResponse(Call<DetailChartInfo> call, Response<DetailChartInfo> response) {
-                        Log.d("shenhuaLog -- " + DetailActivity.class.getSimpleName(), "onResponse: >>> " + response.raw().toString());
+                        Log.d("shenhuaLog -- " + DetailActivity.class.getSimpleName(), "温度: >>> " + response.raw().toString());
                         List<String> times = response.body().getData().getTimeList();
                         List<String> values = response.body().getData().getDataList();
-                        if (times != null && times.size() > 0) {
-                            initElectLinechart(times, values);
-                        }
+//                        for (int i = 0; i < 5; i++) {
+//                            values.add("45");
+//                            times.add("12:00:00");
+//                        }
+                        initElectLinechart(times, values, true);
+                    }
+
+                    @Override
+                    public void onFailure(Call<DetailChartInfo> call, Throwable t) {
+
+                    }
+                });
+            } else if (sensor.getSensorType() == 3) {// 剩余电流
+                getchartInfo(sensor.getId(), new Callback<DetailChartInfo>() {
+                    @Override
+                    public void onResponse(Call<DetailChartInfo> call, Response<DetailChartInfo> response) {
+                        Log.d("shenhuaLog -- " + DetailActivity.class.getSimpleName(), "剩余电流: >>> " + response.raw().toString());
+                        List<String> times = response.body().getData().getTimeList();
+                        List<String> values = response.body().getData().getDataList();
+//                        for (int i = 0; i < 50; i++) {
+//                            values.add("200");
+//                            times.add("14:00:05");
+//                        }
+                        initElectLinechart(times, values, false);
                     }
 
                     @Override
@@ -153,21 +181,46 @@ public class DetailActivity extends BaseActivity {
         }
     }
 
-    private void initElectLinechart(List<String> times, List<String> values) {
+    /**
+     * 初始化linechart
+     *
+     * @param times  x轴数据
+     * @param values y轴数据
+     * @param temper 是否为温度表 true是温度表
+     */
+    private void initElectLinechart(List<String> times, List<String> values, boolean temper) {
+        if (times == null || times.size() == 0) {
+            return;
+        }
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < times.size(); i++) {
-            Log.d("shenhuaLog -- " + DetailActivity.class.getSimpleName(), "initElectLinechart: >>> " + values.get(i));
             entries.add(new Entry(i, Float.parseFloat(values.get(i))));
         }
-        LineChart lineChart = (LineChart) mElectChartLayout.findViewById(R.id.linechart);
-        if (mElectLineChartWrapper == null) {
-            mElectLineChartWrapper = new LineChartWrapper(this, lineChart);
-            LineChart chart = mElectLineChartWrapper.createStringXChart(entries);
-            chart.getXAxis().setValueFormatter(new StringXFormatter(times));
-
-        } else {
-            mElectLineChartWrapper.reset();
+        if (temper) {// 温度
+            LineChart lineChart = (LineChart) mTemperChartLayout.findViewById(R.id.linechart);
+            setupLinechart(times, entries, lineChart, 80);
+            mTemperChartLayout.setVisibility(View.VISIBLE);
+        } else {// 剩余电流
+            LineChart lineChart = (LineChart) mElectChartLayout.findViewById(R.id.linechart);
+            setupLinechart(times, entries, lineChart, 1000);
+            mElectChartLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    /**
+     * 数据填充表格
+     *
+     * @param times
+     * @param entries
+     * @param lineChart
+     * @param top
+     */
+    private void setupLinechart(List<String> times, List<Entry> entries, LineChart lineChart, int top) {
+        new LineChartWrapper(lineChart).create(entries).setYTop(top)
+                .setXValueFormat(new XValueFormatter(times))
+                .setXLabelAngle(60)
+                .setXLabelCount(times.size() > 5 ? 5 : times.size())
+                .setMarkView(new DetailLineMarkView(this, lineChart, R.layout.view_marker_detail).setxVaules(times));
     }
 
     @Override

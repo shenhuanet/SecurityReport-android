@@ -1,20 +1,19 @@
 package com.shenhua.outer.security.report.view.widget;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v4.content.ContextCompat;
+import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.shenhua.outer.security.report.R;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,121 +25,124 @@ import java.util.List;
  */
 public class LineChartWrapper {
 
-    private Context mContext;
     private LineChart mLineChart;
-    private static final int LEABLE_STEP = 5;
+    private LineDataSet mLineDataSet;
+    private static final int LABEL_STEP = 5;
 
-    public LineChartWrapper(Context context, LineChart lineChart) {
-        mContext = context;
+    public LineChartWrapper(LineChart lineChart) {
         this.mLineChart = lineChart;
     }
 
-    public void reset(){
-        LineData oldData = mLineChart.getLineData();
-        if (oldData != null) {
-            oldData.removeDataSet(0);
-            oldData.notifyDataChanged();
-            mLineChart.notifyDataSetChanged();
-            mLineChart.invalidate();
-        }
-    }
-
-    public void refresh(ArrayList<Integer> data) {
-        LineData oldData = mLineChart.getLineData();
-        if (oldData != null) {
-            oldData.removeDataSet(0);
-            oldData.notifyDataChanged();
-            mLineChart.notifyDataSetChanged();
-            mLineChart.invalidate();
-        }
-        List<Entry> entries = new ArrayList<>();
-        for (int i = 0; i < data.size(); i++) {
-            entries.add(new Entry(i, data.get(i)));
-        }
-        LineDataSet lineDataSet = setupDataSet(entries);
-        LineData lineData = setupLineData(lineDataSet);
-        // 去除小数
-        int max = (int) lineData.getYMax();
-        mLineChart.getAxisLeft().setAxisMaximum(getMax(max));
-        mLineChart.setData(lineData);
-    }
-
-    public LineChart create(List<Entry> entryList) {
+    public LineChartWrapper create(List<Entry> entryList) {
         if (entryList != null && !entryList.isEmpty()) {
-            mLineChart.setMarker(new LineMarkView(mContext, R.layout.view_custom_marker));
             mLineChart.setScaleEnabled(false);
             mLineChart.setDrawBorders(false);
             mLineChart.setDescription(null);
             mLineChart.setHighlightPerTapEnabled(true);
             mLineChart.getAxisRight().setEnabled(false);
             mLineChart.getLegend().setEnabled(false);
+            mLineChart.animateY(2000);
             setupXAxis(mLineChart.getXAxis());
             setupYAxis(mLineChart.getAxisLeft());
-            mLineChart.animateY(2000);
-            LineDataSet lineDataSet = setupDataSet(entryList);
-            LineData lineData = setupLineData(lineDataSet);
-            mLineChart.setData(lineData);
+            mLineDataSet = setupDataSet(entryList);
+            mLineChart.setData(new LineData(mLineDataSet));
         } else {
             mLineChart.setNoDataText("暂无记录");
         }
-        return mLineChart;
+        return this;
     }
 
     public LineChart create(List<Entry> entryList1, List<Entry> entryList2) {
         if ((entryList1 == null && entryList2 == null)
                 || (entryList1.isEmpty() && entryList2.isEmpty())) {
             mLineChart.setNoDataText("暂无记录");
-            mLineChart.setNoDataTextColor(Color.parseColor("#ffffff"));
         } else {
-            mLineChart.setMarker(new LineMarkView(mContext, R.layout.view_custom_marker));
             mLineChart.setScaleEnabled(false);
             mLineChart.getAxisRight().setEnabled(false);
             mLineChart.getLegend().setEnabled(false);
             setupXAxis(mLineChart.getXAxis());
             setupYAxis(mLineChart.getAxisLeft());
-
             LineDataSet lineDataSet1 = setupDataSet(entryList1);
             LineDataSet lineDataSet2 = setupDataSet(entryList2);
-
             LineData lineData = setupLineData(lineDataSet1, lineDataSet2);
             mLineChart.setData(lineData);
         }
         return mLineChart;
     }
 
-    public LineChart createStringXChart(List<Entry> entryList) {
-        if (entryList != null && !entryList.isEmpty()) {
-            mLineChart.setMarker(new LineMarkView(mContext, R.layout.view_custom_marker));
-            mLineChart.setScaleEnabled(false);
-            mLineChart.setDrawBorders(false);
-            mLineChart.setDescription(null);
-            mLineChart.setHighlightPerTapEnabled(true);
-            mLineChart.getAxisRight().setEnabled(false);
-            mLineChart.getLegend().setEnabled(false);
-            setupXAxis1(mLineChart.getXAxis());
-            setupYAxis1(mLineChart.getAxisLeft());
-            mLineChart.animateY(2000);
-            LineDataSet lineDataSet = setupDataSet(entryList);
-            LineData lineData = setupLineData(lineDataSet);
-            mLineChart.setData(lineData);
-        } else {
-            mLineChart.setNoDataText("暂无记录");
-        }
-        return mLineChart;
+    /**
+     * set the max value for the yAxis.
+     *
+     * @param value max value
+     */
+    public LineChartWrapper setYTop(int value) {
+        mLineChart.getAxisLeft().setAxisMaximum(value);
+        return this;
     }
 
-    private void setupXAxis1(XAxis xAxis) {
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setAvoidFirstLastClipping(true);
-        setupAxis(xAxis);
+    /**
+     * set the default max value for the yAxis by calculate.
+     */
+    public LineChartWrapper setDefaultYTop() {
+        int max = (int) mLineChart.getLineData().getYMax();
+        mLineChart.getAxisLeft().setAxisMaximum(getMax(max));
+        return this;
     }
 
-    private void setupYAxis1(YAxis yAxis) {
-        yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(1000);
-        yAxis.setLabelCount(5);
-        yAxis.setDrawZeroLine(false);
-        setupAxis(yAxis);
+    public LineChartWrapper setXLabelCount(int count) {
+        mLineChart.getXAxis().setLabelCount(count, true);
+        return this;
+    }
+
+    public LineChartWrapper setCenterAxisLabels(boolean b) {
+        mLineChart.getXAxis().setCenterAxisLabels(b);
+        return this;
+    }
+
+    /**
+     * if set to true, the chart will avoid that the first and last label entry
+     * in the chart "clip" off the edge of the chart or the screen
+     *
+     * @param enabled default true,set false that the chart can scroll left and right
+     */
+    public LineChartWrapper setXAvoidFirstLastClipping(boolean enabled) {
+        mLineChart.getXAxis().setAvoidFirstLastClipping(enabled);
+        return this;
+    }
+
+    public LineChartWrapper setXLabelAngle(float angle) {
+        mLineChart.getXAxis().setLabelRotationAngle(angle);
+        return this;
+    }
+
+    public LineChartWrapper setMarkView(IMarker marker) {
+        mLineChart.setMarker(marker);
+        return this;
+    }
+
+    public LineChartWrapper setXValueFormat(IAxisValueFormatter f) {
+        mLineChart.getXAxis().setValueFormatter(f);
+        return this;
+    }
+
+    public LineChartWrapper setLineColor(int color) {
+        mLineDataSet.setColor(color);
+        return this;
+    }
+
+    public LineChartWrapper setShadowColor(int color) {
+        mLineDataSet.setFillDrawable(new ColorDrawable(color));
+        return this;
+    }
+
+    public LineChartWrapper setShadowDrawable(Drawable drawable) {
+        mLineDataSet.setFillDrawable(drawable);
+        return this;
+    }
+
+    public LineChartWrapper setDashLineColor(int color) {
+        mLineDataSet.setHighLightColor(color);
+        return this;
     }
 
     private LineDataSet setupDataSet(List<Entry> entryList) {
@@ -148,14 +150,14 @@ public class LineChartWrapper {
         lineDataSet.setHighlightEnabled(true);
         lineDataSet.setDrawValues(false);
         lineDataSet.setDrawHighlightIndicators(true);
-        lineDataSet.setHighLightColor(Color.GREEN);
+        lineDataSet.setHighLightColor(Color.BLUE);
         lineDataSet.setDrawCircles(false);
         lineDataSet.setDrawFilled(true);
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         lineDataSet.setCubicIntensity(0.1f);
         lineDataSet.enableDashedHighlightLine(5, 5, 0);
-        lineDataSet.setFillDrawable(new ColorDrawable(ContextCompat.getColor(mContext, R.color.colorOrangeHalf)));
-        lineDataSet.setColor(ContextCompat.getColor(mContext, R.color.colorOrange1));
+        lineDataSet.setFillDrawable(new ColorDrawable(0x7FF79856));
+        lineDataSet.setColor(0xFFF2945A);
         return lineDataSet;
     }
 
@@ -166,32 +168,30 @@ public class LineChartWrapper {
     private void setupXAxis(XAxis xAxis) {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAvoidFirstLastClipping(true);
-        xAxis.setLabelCount(24, true);
         setupAxis(xAxis);
     }
 
     private void setupYAxis(YAxis yAxis) {
         yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(LEABLE_STEP * 2);
-        yAxis.setLabelCount(LEABLE_STEP);
+        yAxis.setLabelCount(LABEL_STEP);
         yAxis.setDrawZeroLine(false);
         setupAxis(yAxis);
     }
 
     private void setupAxis(AxisBase base) {
-        base.setAxisLineColor(R.color.colorWhiteLite);
+        base.setAxisLineColor(0xFFAFAFAF);
         base.setDrawAxisLine(true);
         base.setDrawGridLines(false);
         base.setDrawLabels(true);
     }
 
-    private int getMax(int a) {
-        if (a < LEABLE_STEP) {
-            return LEABLE_STEP;
-        } else if (a % LEABLE_STEP == 0) {
+    public static int getMax(int a) {
+        if (a < LABEL_STEP) {
+            return LABEL_STEP;
+        } else if (a % LABEL_STEP == 0) {
             return a;
         } else {
-            return (a / LEABLE_STEP + 1) * LEABLE_STEP;
+            return (a / LABEL_STEP + 1) * LABEL_STEP;
         }
     }
 
