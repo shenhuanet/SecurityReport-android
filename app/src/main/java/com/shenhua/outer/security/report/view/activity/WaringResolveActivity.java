@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,9 @@ import com.shenhua.outer.security.report.core.utils.AndroidUtils;
 import com.shenhua.outer.security.report.databinding.ActivityWarningResolveBinding;
 
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,8 +90,15 @@ public class WaringResolveActivity extends BaseActivity {
         ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("请稍候");
         dialog.show();
+        String msg;
+        try {
+            msg = URLEncoder.encode(mResolveEt.getText().toString(), "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            msg = mResolveEt.getText().toString();
+        }
         RetrofitHelper.get().getRetrofit().create(IService.class)
-                .resolveWarning(mWarningId, mResolveEt.getText().toString()).enqueue(new Callback<String>() {
+                .resolveWarning(mWarningId, msg).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 dialog.dismiss();

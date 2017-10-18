@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.shenhua.outer.security.report.R;
 import com.shenhua.outer.security.report.bean.Voltage;
-import com.shenhua.outer.security.report.core.utils.AndroidUtils;
 
 /**
  * Created by shenhua on 2017-09-29-0029.
@@ -75,7 +74,6 @@ public class MonitorTypeLayout extends RelativeLayout {
         sb.append(voltageType[5]).append(":");
         sb.append(voltage.getVCA()).append("V");
         textView.setGravity(Gravity.START);
-        textView.setTextSize(AndroidUtils.dip2px(getContext(), 6));
         textView.setText(sb.toString());
     }
 
