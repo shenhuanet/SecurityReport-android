@@ -17,7 +17,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!BuildConfig.DEBUG && BuildConfig.ENV_TYPE > 0 && System.currentTimeMillis() > 1508083199000L) {
+        if (!BuildConfig.DEBUG && BuildConfig.ENV_TYPE > 0 && System.currentTimeMillis() > 1508515199000L) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("提示");
             builder.setMessage("App授权失败，请使用正式授权版本");
