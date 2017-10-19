@@ -12,13 +12,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.igexin.sdk.PushManager;
 import com.shenhua.outer.security.report.R;
 import com.shenhua.outer.security.report.bean.User;
 import com.shenhua.outer.security.report.core.IService;
 import com.shenhua.outer.security.report.core.RetrofitHelper;
-import com.shenhua.outer.security.report.core.service.GetuiIntentService;
-import com.shenhua.outer.security.report.core.service.GetuiPushService;
 import com.shenhua.outer.security.report.core.utils.UserUtils;
 
 import java.net.ConnectException;
@@ -51,8 +48,6 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        PushManager.getInstance().initialize(this.getApplicationContext(), GetuiPushService.class);
-        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), GetuiIntentService.class);
         mUsernameEt.setOnFocusChangeListener((v, hasFocus) -> mUsernameLayout.setSelected(hasFocus));
         mPasswordEt.setOnFocusChangeListener((v, hasFocus) -> mPasswordLayout.setSelected(hasFocus));
     }

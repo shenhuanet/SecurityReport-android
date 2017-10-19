@@ -67,7 +67,7 @@ public class MeFragment extends Fragment {
     }
 
     @OnClick(R.id.logout)
-    void logout(View view) {
+    void logout() {
         Toast.makeText(getContext(), "退出登录", Toast.LENGTH_SHORT).show();
         UserUtils.get().logout(getContext());
         startActivity(new Intent(getContext(), LoginActivity.class));

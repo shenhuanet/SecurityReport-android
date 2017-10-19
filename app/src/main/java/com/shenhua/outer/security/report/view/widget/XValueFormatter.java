@@ -19,11 +19,12 @@ public class XValueFormatter implements IAxisValueFormatter {
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        if (value < 0) {
-            return "";
-        } else {
-            int index = (int) (value % mXValue.size());
-            return mXValue.get(index);
-        }
+//        if (value < 0) {
+//            return "";
+//        } else {
+//            int index = (int) (value % mXValue.size());
+//            return mXValue.get(index);
+//        }
+        return "";
     }
 }

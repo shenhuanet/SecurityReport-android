@@ -2,6 +2,9 @@ package com.shenhua.outer.security.report;
 
 import android.app.Application;
 
+import com.igexin.sdk.PushManager;
+import com.shenhua.outer.security.report.core.service.GetuiIntentService;
+import com.shenhua.outer.security.report.core.service.GetuiPushService;
 import com.tencent.bugly.crashreport.CrashReport;
 
 /**
@@ -14,5 +17,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         CrashReport.initCrashReport(this, "6842d8b3bd", false);
+        PushManager.getInstance().initialize(this.getApplicationContext(), GetuiPushService.class);
+        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), GetuiIntentService.class);
     }
 }
