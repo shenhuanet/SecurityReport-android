@@ -32,7 +32,7 @@ public class MonitorTypeLayout extends RelativeLayout {
 
         String[] typeKey = getResources().getStringArray(R.array.monitor_type);
         keyTv.setText(typeKey[type - 1]);
-//        valueTv.setText(TextUtils.isEmpty(readValue) ? "" : readValue);
+        // valueTv.setText(TextUtils.isEmpty(readValue) ? "" : readValue);
         setValue(valueTv, TextUtils.isEmpty(readValue) ? "" : readValue, type);
         setStatusLevel(statusIv, warningTotal);
         setTextColor(valueTv, warningTotal);
@@ -48,8 +48,14 @@ public class MonitorTypeLayout extends RelativeLayout {
             case 3:
             case 6:
             case 8:
-                textView.setText(value);
+                if (TextUtils.isEmpty(value)) {
+                    textView.setText("-");
+                } else {
+                    textView.setText(value);
+                }
                 textView.append(typeUnit[type - 1]);
+                break;
+            default:
                 break;
         }
     }
@@ -79,18 +85,6 @@ public class MonitorTypeLayout extends RelativeLayout {
 
     private void setStatusLevel(ImageView imageView, int value) {
         imageView.setImageLevel(value);
-//        try {
-//
-//            TypedArray ar = getResources().obtainTypedArray(R.array.warning_type_bg);
-//            int len = ar.length();
-//            int[] resIds = new int[len];
-//            for (int i = 0; i < len; i++)
-//                resIds[i] = ar.getResourceId(i, 0);
-//            ar.recycle();
-//            valueTv.setBackgroundResource(resIds[value]);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     private void setTextColor(TextView valueTv, int value) {
@@ -98,8 +92,9 @@ public class MonitorTypeLayout extends RelativeLayout {
             TypedArray ar = getResources().obtainTypedArray(R.array.warning_type_color);
             int len = ar.length();
             int[] resIds = new int[len];
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < len; i++) {
                 resIds[i] = ar.getResourceId(i, 0);
+            }
             ar.recycle();
             valueTv.setTextColor(ContextCompat.getColor(getContext(), resIds[value]));
         } catch (Exception e) {

@@ -62,24 +62,24 @@
                             style="@style/TextStyle.Gray"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="16dp"
-                            android:text="@{data.stationName}" />
+                            android:text="@{data.monitoringName}" />
 
                     </RelativeLayout>
 
-                    <RelativeLayout style="@style/ItemLayoutStyle.White">
+                    <!--<RelativeLayout style="@style/ItemLayoutStyle.White">-->
 
-                        <TextView
-                            style="@style/TextStyle"
-                            android:layout_marginStart="16dp"
-                            android:text="设备编号" />
+                    <!--<TextView-->
+                    <!--style="@style/TextStyle"-->
+                    <!--android:layout_marginStart="16dp"-->
+                    <!--android:text="设备编号" />-->
 
-                        <TextView
-                            style="@style/TextStyle.Gray"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginEnd="16dp"
-                            android:text='@{" "+data.sensorId}' />
+                    <!--<TextView-->
+                    <!--style="@style/TextStyle.Gray"-->
+                    <!--android:layout_alignParentEnd="true"-->
+                    <!--android:layout_marginEnd="16dp"-->
+                    <!--android:text='@{" "+data.sensorId}' />-->
 
-                    </RelativeLayout>
+                    <!--</RelativeLayout>-->
 
                     <RelativeLayout style="@style/ItemLayoutStyle.White">
 

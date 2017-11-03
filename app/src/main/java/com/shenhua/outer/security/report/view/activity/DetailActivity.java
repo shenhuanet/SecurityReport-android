@@ -143,13 +143,8 @@ public class DetailActivity extends BaseActivity {
                 getchartInfo(sensor.getId(), new Callback<DetailChartInfo>() {
                     @Override
                     public void onResponse(Call<DetailChartInfo> call, Response<DetailChartInfo> response) {
-                        Log.d("shenhuaLog -- " + DetailActivity.class.getSimpleName(), "温度: >>> " + response.raw().toString());
                         List<String> times = response.body().getData().getTimeList();
                         List<String> values = response.body().getData().getDataList();
-//                        for (int i = 0; i < 5; i++) {
-//                            values.add("45");
-//                            times.add("12:00:00");
-//                        }
                         initElectLinechart(times, values, true);
                     }
 
@@ -162,13 +157,8 @@ public class DetailActivity extends BaseActivity {
                 getchartInfo(sensor.getId(), new Callback<DetailChartInfo>() {
                     @Override
                     public void onResponse(Call<DetailChartInfo> call, Response<DetailChartInfo> response) {
-                        Log.d("shenhuaLog -- " + DetailActivity.class.getSimpleName(), "剩余电流: >>> " + response.raw().toString());
                         List<String> times = response.body().getData().getTimeList();
                         List<String> values = response.body().getData().getDataList();
-//                        for (int i = 0; i < 50; i++) {
-//                            values.add("200");
-//                            times.add("14:00:05");
-//                        }
                         initElectLinechart(times, values, false);
                     }
 
@@ -279,7 +269,6 @@ public class DetailActivity extends BaseActivity {
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                Log.d("shenhuaLog -- " + DetailActivity.class.getSimpleName(), "onResponse: 复位 >>>> " + call.request().toString());
                 mProgressDialog.dismiss();
                 try {
                     JSONObject obj = new JSONObject(response.body());
