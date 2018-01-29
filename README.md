@@ -1,5 +1,5 @@
 # SecurityReport
-安防数据展示APP
+合州消防数据监控APP
 
 ## 效果展示
 <div align="center">
@@ -11,6 +11,12 @@
 	<img width="300" height="533" src="https://github.com/shenhuanet/SecurityReport/blob/master/screenshot/image_detail.png"/>
 	<img width="300" height="533" src="https://github.com/shenhuanet/SecurityReport/blob/master/screenshot/image_resolve.png"/>
 </div>
+
+## 更新日志
+v1.0.0 初版
+v1.0.1 bug调试版
+v1.0.2 发布版,修复统计图显示
+v1.0.3 发布版,更换logo和名称
 
 ## 关于作者
 博客：http://blog.csdn.net/klxh2009<br>
