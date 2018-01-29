@@ -6,7 +6,7 @@ package com.shenhua.outer.security.report.core.utils;
  */
 public class Contanst {
 
-    public static final String BASE_URL = "http://smart119.rleit.com/Smart119/";
+    public static final String BASE_URL = "http://hezhou.rleit.com/Smart119/";
     public static final String SLAT = "o21123";
     public static final String GETUI_APPID = "bTHXq07Xka5jvFQTvhrvn5";
     public static final String GETUI_APPKEY = "j2PULw7cOWAJDmm0ejNmG8";
